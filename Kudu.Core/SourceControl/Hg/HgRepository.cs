@@ -233,8 +233,12 @@ namespace Kudu.Core.SourceControl
 
         fetch:
             try
-            {                
-                _hgExecutable.Execute(tracer, "pull {0} --branch {1} --noninteractive", remote, branchNameWithQuotes, PathUtilityFactory.Instance.ResolveSSHPath());
+            {
+                // When executing the command we specify the values with single quote.
+                // in order to ensure that the formatting doesn't break, we escape the single quotes
+                remote = remote?.Replace("'", "\\'");
+                branchNameWithQuotes = branchNameWithQuotes?.Replace("'", "\\'");
+                _hgExecutable.Execute(tracer, "pull '{0}' --branch '{1}' --noninteractive", remote, branchNameWithQuotes, PathUtilityFactory.Instance.ResolveSSHPath());
             }
             catch (CommandLineException exception)
             {
