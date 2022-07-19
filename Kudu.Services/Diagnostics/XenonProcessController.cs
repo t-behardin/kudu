@@ -90,7 +90,6 @@ namespace Kudu.Services.Diagnostics
             var requestUri = Request.GetRequestUri(_settings.GetUseOriginalHostForReference()).GetLeftPart(UriPartial.Path).TrimEnd('/');
             using (_tracer.Step("XenonProcessController.GetAllProcesses"))
             {
-                // TODO: WHAT TO DO ABOUT THE ALLUSERS PART
                 return ForwardToContainer($"");
             }
         }
@@ -148,9 +147,10 @@ namespace Kudu.Services.Diagnostics
 
                 // Get the container address and the port kudu agent port
                 IDictionary environmentVariables = System.Environment.GetEnvironmentVariables();
-                if (environmentVariables.Contains("KUDU_AGENT_HOST") && environmentVariables.Contains("KUDU_AGENT_PORT"))
+                if (environmentVariables.Contains("KUDU_AGENT_HOST") && environmentVariables.Contains("KUDU_AGENT_PORT")
+                    && environmentVariables.Contains("KUDU_AGENT_USR") && environmentVariables.Contains("KUDU_AGENT_PWD"))
                 {
-                    var containerAddress = environmentVariables["KUDU_AGENT_HOST"];     // TODO: This should be a try get correct?
+                    var containerAddress = environmentVariables["KUDU_AGENT_HOST"];
                     var kuduContainerAgentPort = environmentVariables["KUDU_AGENT_PORT"];
                     var kudu_agent_un = environmentVariables["KUDU_AGENT_USR"];
                     var kudu_agent_pwd = environmentVariables["KUDU_AGENT_PWD"];
@@ -175,7 +175,7 @@ namespace Kudu.Services.Diagnostics
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound); // TODO: Should there be a message saying that the container did not load properly
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
                 }
 
             }
