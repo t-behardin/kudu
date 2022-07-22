@@ -64,17 +64,6 @@ namespace Kudu.Agent.Security
                 context.Response.StatusCode = 401; //UnAuthorized
                 await context.Response.WriteAsync("Username or password is incorrect.");
             }
-            /*else
-            {
-                throw new Unauthorized(new { message = "Username or password is incorrect." });
-                //return BadRequest(new { message = "Username or password is incorrect."});
-            }*/
         }
-
-        /*public IActionResult authenticateUser(string username, string password)
-        {
-
-            
-        }*/
     }
 }

@@ -36,7 +36,7 @@ namespace Kudu.Services.Jobs
             _tracer = tracer;
         }
 
-        [HttpGet("listalljobs/")]
+        [HttpGet("listalljobs")]
         public IActionResult ListAllJobs()
         {
             IEnumerable<ContinuousJob> continuousJobs = _continuousJobsManager.ListJobs(forceRefreshCache: false);
@@ -47,7 +47,7 @@ namespace Kudu.Services.Jobs
             return ListJobsResponseBasedOnETag(allJobs);
         }
 
-        [HttpGet("/listcontinuousjobs")]
+        [HttpGet("listcontinuousjobs")]
         public IActionResult ListContinuousJobs()
         {
             IEnumerable<ContinuousJob> continuousJobs = _continuousJobsManager.ListJobs(forceRefreshCache: false);
@@ -55,7 +55,7 @@ namespace Kudu.Services.Jobs
             return ListJobsResponseBasedOnETag(continuousJobs);
         }
 
-        [HttpGet("/getcontinuousjob/{jobName}")]
+        [HttpGet("getcontinuousjob/{jobName}")]
         public IActionResult GetContinuousJob(string jobName)
         {
             ContinuousJob continuousJob = _continuousJobsManager.GetJob(jobName);

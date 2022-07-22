@@ -47,6 +47,10 @@ namespace Kudu.Agent.Controllers
         public IActionResult KillProcess(int id)
         {
             Process p = GetProcessById(id);
+            if (p == null)
+            {
+                return NotFound();
+            }
             p.Kill(entireProcessTree: true);
 
             return Ok();
@@ -55,8 +59,12 @@ namespace Kudu.Agent.Controllers
         [HttpGet("{id}/threads")]
         public IActionResult GetAllThreads(int id)
         {
-            Process process = GetProcessById(id);
-            IEnumerable<ProcessThreadInfo> threadsInfo = GetThreads(process);
+            Process p = GetProcessById(id);
+            if (p == null)
+            {
+                return NotFound();
+            }
+            IEnumerable<ProcessThreadInfo> threadsInfo = GetThreads(p);
 
             return Ok(threadsInfo);
         }
@@ -65,6 +73,10 @@ namespace Kudu.Agent.Controllers
         public IActionResult GetThread(int processId, int threadId)
         {
             Process p = GetProcessById(processId);
+            if (p == null)
+            {
+                return NotFound();
+            }
             IEnumerable<ProcessThread> threads = p.Threads.Cast<ProcessThread>();
             ProcessThread thread = threads.FirstOrDefault(t => t.Id == threadId);
             if (thread == null)
@@ -80,8 +92,12 @@ namespace Kudu.Agent.Controllers
         [HttpGet("{id}/modules")]
         public IActionResult GetAllModules(int id)
         {
-            Process process = GetProcessById(id);
-            IEnumerable<ProcessModuleInfo> modulesInfo = GetModules(process);
+            Process p = GetProcessById(id);
+            if (p == null)
+            {
+                return NotFound();
+            }
+            IEnumerable<ProcessModuleInfo> modulesInfo = GetModules(p);
 
             return Ok(modulesInfo);
         }
@@ -90,6 +106,10 @@ namespace Kudu.Agent.Controllers
         public IActionResult GetModule(int id, string baseAddress)
         {
             Process p = GetProcessById(id);
+            if (p == null)
+            {
+                return NotFound();
+            }
             IEnumerable<ProcessModule> modules = p.Modules.Cast<ProcessModule>();
             ProcessModule module = modules.FirstOrDefault(t => t.BaseAddress.ToInt64() == Int64.Parse(baseAddress, NumberStyles.HexNumber));
             if (module == null)
@@ -320,5 +340,10 @@ namespace Kudu.Agent.Controllers
 
             return false;
         }
+    }
+
+    class ProcessNotFoundException : Exception
+    {
+        public ProcessNotFoundException() : base("Unable to find a process that matches the provided identifier") { }
     }
 }
