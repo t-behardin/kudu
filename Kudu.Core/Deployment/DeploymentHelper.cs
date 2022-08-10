@@ -6,10 +6,10 @@ using Kudu.Core.Tracing;
 using Kudu.Contracts.Infrastructure;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Infrastructure;
-using Kudu.Core.SourceControl;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Kudu.Core.Settings;
+using Kudu.Core.SourceControl;
 
 namespace Kudu.Core.Deployment
 {

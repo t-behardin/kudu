@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Kudu.Contracts;
 using Kudu.Contracts.Tracing;
 using Kudu.Services.Editor;
 using Microsoft.AspNet.SignalR;

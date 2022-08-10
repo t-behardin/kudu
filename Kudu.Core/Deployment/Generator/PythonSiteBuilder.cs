@@ -1,4 +1,5 @@
-﻿using Kudu.Contracts.Settings;
+﻿using Kudu.Contracts;
+using Kudu.Contracts.Settings;
 
 namespace Kudu.Core.Deployment.Generator
 {

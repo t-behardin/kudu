@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Kudu.Contracts;
+using Kudu.Contracts.Deployment;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Deployment;
 using Kudu.Core.Tracing;
@@ -106,7 +108,7 @@ namespace Kudu.Core.Infrastructure
         }
 
         // this is used for long running command that requires ongoing progress such as job, build script etc.
-        public Tuple<string, string> ExecuteWithProgressWriter(ILogger logger, ITracer tracer, string arguments, params object[] args)
+        public Tuple<string, string> ExecuteWithProgressWriter(Deployment.ILogger logger, ITracer tracer, string arguments, params object[] args)
         {
             try
             {

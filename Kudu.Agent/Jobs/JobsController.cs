@@ -1,7 +1,13 @@
-﻿using Kudu.Agent;
-using Kudu.Contracts;
+﻿using Kudu.Core;
 using Kudu.Contracts.Jobs;
+using Kudu.Contracts.Settings;
 using Kudu.Contracts.Tracing;
+using Kudu.Core.Helpers;
+using Kudu.Core.Hooks;
+using Kudu.Core.Infrastructure;
+using Kudu.Core.Jobs;
+using Kudu.Core.Settings;
+using Kudu.Core.Tracing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -14,28 +20,36 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Kudu.Contracts;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
+using System.Text.Json.Nodes;
+using Kudu.Contracts.Infrastructure;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Extensions;
+using Kudu.Agent.Util;
 
-namespace Kudu.Services.Jobs
+namespace Kudu.Agent.Jobs
 {
     //[ArmControllerConfiguration]
     [ApiController]
     [Route("/webjobs")]
     public class JobsController : ControllerBase
     {
-        private readonly ITracer _tracer;
+        //private readonly ITracer _tracer;
         private readonly ITriggeredJobsManager _triggeredJobsManager;
         private readonly IContinuousJobsManager _continuousJobsManager;
 
-        public const string GeoLocationHeaderKey = "x-ms-geo-location";
         public static string TmpFolder = System.Environment.ExpandEnvironmentVariables(@"%WEBROOT_PATH%\data\Temp");
 
-        public JobsController(ITriggeredJobsManager triggeredJobsManager, IContinuousJobsManager continuousJobsManager, ITracer tracer)
+        public JobsController()
         {
-            _triggeredJobsManager = triggeredJobsManager;
-            _continuousJobsManager = continuousJobsManager;
-            _tracer = tracer;
+            _triggeredJobsManager = Host._triggeredJobsManager;
+            _continuousJobsManager = Host._continuousJobsManager;
         }
 
+        [HttpGet]
         [HttpGet("listalljobs")]
         public IActionResult ListAllJobs()
         {
@@ -47,7 +61,7 @@ namespace Kudu.Services.Jobs
             return ListJobsResponseBasedOnETag(allJobs);
         }
 
-        [HttpGet("listcontinuousjobs")]
+        [HttpGet("continuouswebjobs")]
         public IActionResult ListContinuousJobs()
         {
             IEnumerable<ContinuousJob> continuousJobs = _continuousJobsManager.ListJobs(forceRefreshCache: false);
@@ -55,21 +69,20 @@ namespace Kudu.Services.Jobs
             return ListJobsResponseBasedOnETag(continuousJobs);
         }
 
-        [HttpGet("getcontinuousjob/{jobName}")]
+        [HttpGet("continuouswebjobs/{jobName}")]
         public IActionResult GetContinuousJob(string jobName)
         {
             ContinuousJob continuousJob = _continuousJobsManager.GetJob(jobName);
             if (continuousJob != null)
             {
-                // return Request.CreateResponse(HttpStatusCode.OK, ArmUtils.AddEnvelopeOnArmRequest(continuousJob, Request));
-                //return Ok(ArmUtils.AddEnvelopeOnArmRequest(continuousJob, Request));
-                return Ok();
+                return Ok(XenonArmUtils.AddEnvelopeOnArmRequest(continuousJob, Request));
+               
             }
 
-            return NotFound();
+            return NotFound($"Could not find the continuous job with the name \'{jobName}\'.");
         }
 
-        [HttpPost("{jobName}/enablecontinuousjob")]
+        [HttpPost("continuouswebjobs/{jobName}/start")]
         public IActionResult EnableContinuousJob(string jobName)
         {
             try
@@ -87,7 +100,7 @@ namespace Kudu.Services.Jobs
             }
         }
 
-        [HttpPost("{jobName}/disablecontinuousjob")]
+        [HttpPost("continuouswebjobs/{jobName}/stop")]
         public IActionResult DisableContinuousJob(string jobName)
         {
             try
@@ -105,27 +118,33 @@ namespace Kudu.Services.Jobs
             }
         }
 
-        [HttpGet("{jobName}/getcontinuousjobsettings")]
+        [HttpGet("continuouswebjobs/{jobName}/settings")]
         public IActionResult GetContinuousJobSettings(string jobName)
         {
             return GetJobSettings(jobName, _continuousJobsManager);
         }
 
-        [HttpPut("{jobName}/setcontinuousjobsettings/{jobSettings}")]
+        [HttpPut("continuouswebjobs/{jobName}/settings")]
         public IActionResult SetContinuousJobSettings(string jobName, JobSettings jobSettings)
         {
-            return SetJobSettings(jobName, jobSettings, _continuousJobsManager);
+            throw new NotImplementedException();
+            //return SetJobSettings(jobName, jobSettings, _continuousJobsManager);
         }
 
-        [HttpGet("/listtriggeredjobs")]
+        [HttpGet("triggeredwebjobs")]
         public IActionResult ListTriggeredJobs()
         {
+
+            if (_triggeredJobsManager == null)
+            {
+                return NotFound();
+            }
             IEnumerable<TriggeredJob> triggeredJobs = _triggeredJobsManager.ListJobs(forceRefreshCache: false);
 
             return ListJobsResponseBasedOnETag(triggeredJobs);
         }
 
-        [HttpGet("/listtriggeredjobsinswaggerformat")]
+        [HttpGet("triggeredjobsinswaggerformat")]
         public IActionResult ListTriggeredJobsInSwaggerFormat()
         {
             IEnumerable<TriggeredJob> triggeredJobs = _triggeredJobsManager.ListJobs(forceRefreshCache: false);
@@ -134,20 +153,19 @@ namespace Kudu.Services.Jobs
             return Ok(responseSwagger);
         }
 
-        [HttpGet("/gettriggeredjob/{jobName}")]
+        [HttpGet("triggeredwebjobs/{jobName}")]
         public IActionResult GetTriggeredJob(string jobName)
         {
             TriggeredJob triggeredJob = _triggeredJobsManager.GetJob(jobName);
             if (triggeredJob != null)
             {
-                //return Ok(ArmUtils.AddEnvelopeOnArmRequest(triggeredJob, Request));
-                return Ok(triggeredJob);
+                return Ok(XenonArmUtils.AddEnvelopeOnArmRequest(triggeredJob, Request));
             }
 
-            return NotFound();
+            return NotFound($"Could not find the triggered job with the name \'{jobName}\'.");
         }
 
-        [HttpGet("{jobName}/getHistory")]
+        [HttpGet("triggeredwebjobs/{jobName}/history")]
         public IActionResult GetTriggeredJobHistory(string jobName)
         {
             string etag = GetRequestETag();
@@ -157,65 +175,49 @@ namespace Kudu.Services.Jobs
 
             if (history == null && currentETag == null)
             {
-                return NotFound();
+                return NotFound($"No history to show for the job \'{jobName}\'.");
             }
 
-            HttpResponseMessage response;
             if (etag == currentETag)
             {
+                Response.Headers.ETag = new EntityTagHeaderValue(currentETag).ToString();
+                return StatusCode(304, "Not Modified");
             }
             else
             {
-                //object triggeredJobHistoryResponse =
-                //history != null && IsArmRequest(Request) ? ArmUtils.AddEnvelopeOnArmRequest(history.TriggeredJobRuns, Request) : history;
                 object triggeredJobHistoryResponse =
-                    history != null && IsArmRequest(Request) ? history.TriggeredJobRuns : history;
+                    history != null && XenonArmUtils.IsArmRequest(Request) ? XenonArmUtils.AddEnvelopeOnArmRequest(history.TriggeredJobRuns, Request) : history;
+                
+                Response.Headers.ETag = new EntityTagHeaderValue(currentETag).ToString();
                 return Ok(triggeredJobHistoryResponse);
-                //response = Request.CreateResponse(HttpStatusCode.OK, triggeredJobHistoryResponse);
-
             }
-            /*response.Headers.ETag = new EntityTagHeaderValue(currentETag);
-            return response;*/
-
-            return Ok();
         }
 
-        [HttpGet("{jobName}/getrun/{runId}")]
+        [HttpGet("triggeredwebjobs/{jobName}/history/{runId}")]
         public IActionResult GetTriggeredJobRun(string jobName, string runId)
         {
             TriggeredJobRun triggeredJobRun = _triggeredJobsManager.GetJobRun(jobName, runId);
             if (triggeredJobRun != null)
             {
-                //return Ok(ArmUtils.AddEnvelopeOnArmRequest(triggeredJobRun, Request));
-                return Ok(triggeredJobRun);
+                return Ok(XenonArmUtils.AddEnvelopeOnArmRequest(triggeredJobRun, Request));
             }
 
             return NotFound();
         }
 
-        [HttpPost("{jobName}/invoke")]
+        [HttpPost("triggeredwebjobs/{jobName}/run")]
         public IActionResult InvokeTriggeredJob(string jobName, string arguments = null)
         {
             try
             {
                 Uri runUri = _triggeredJobsManager.InvokeTriggeredJob(jobName, arguments, "External - " + Request.Headers.UserAgent);
 
+                // Add the run uri in the location so caller can get status on the running job
+                Response.Headers.Add("Location", runUri.AbsoluteUri);
+                
                 // Return a 200 in the ARM case, otherwise a 202 can cause it to poll on /run, which we don't support
                 // For non-ARM, stay with the 202 to reduce potential impact of change
-                if (IsArmRequest(Request))
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return Accepted();
-                }
-                // Add the run uri in the location so caller can get status on the running job
-                
-                // TODO: What does this do? Is it important?
-                //response.Headers.Add("Location", runUri.AbsoluteUri);
-
-                //return response;
+                return XenonArmUtils.IsArmRequest(Request) ? Ok() : Accepted();
             }
             catch (JobNotFoundException)
             {
@@ -259,25 +261,25 @@ namespace Kudu.Services.Jobs
             }
         }
 
-        [HttpPut("{jobName}/createcontinuous")]
+        [HttpPut("continuouswebjobs/{jobName}")]
         public Task<IActionResult> CreateContinuousJob(string jobName)
         {
             return CreateJob(jobName, _continuousJobsManager);
         }
 
-        /*[HttpPut]
+        /*[HttpPut("continuouswebjobs/{jobName}/settings/")]
         public IActionResult CreateContinuousJobArm(string jobName, ArmEntry<ContinuousJob> armContinuousJob)
         {
             return SetJobSettings(jobName, armContinuousJob.Properties.Settings, _continuousJobsManager);
         }*/
 
-        [HttpDelete("{jobName}/removecontinuous")]
+        [HttpDelete("continuouswebjobs/{jobName}")]
         public IActionResult RemoveContinuousJob(string jobName)
         {
             return RemoveJob(jobName, _continuousJobsManager);
         }
 
-        [HttpPut("{jobName}/createtriggered")]
+        [HttpPut("triggeredwebjobs/{jobName}")]
         public Task<IActionResult> CreateTriggeredJob(string jobName)
         {
             return CreateJob(jobName, _triggeredJobsManager);
@@ -289,39 +291,42 @@ namespace Kudu.Services.Jobs
             return SetJobSettings(jobName, armTriggeredJob.Properties.Settings, _triggeredJobsManager);
         }*/
 
-        [HttpDelete("{jobName}/remotetriggered")]
+        [HttpDelete("triggeredwebjobs/{jobName}")]
         public IActionResult RemoveTriggeredJob(string jobName)
         {
             return RemoveJob(jobName, _triggeredJobsManager);
         }
 
-        [HttpGet("{jobName}/gettriggeredsettings")]
+        [HttpGet("triggeredwebjobs/{jobName}/settings")]
         public IActionResult GetTriggeredJobSettings(string jobName)
         {
             return GetJobSettings(jobName, _triggeredJobsManager);
         }
 
-        [HttpPut("{jobName}/settriggeredsettings/{jobSettings}")]
+        [HttpPut("triggeredwebjobs/{jobName}/settings")]
         public IActionResult SetTriggeredJobSettings(string jobName, JobSettings jobSettings)
         {
             return SetJobSettings(jobName, jobSettings, _triggeredJobsManager);
         }
 
-        [AcceptVerbs("GET", "HEAD", "PUT", "POST", "DELETE", "PATCH")]
-        public async Task<IActionResult> RequestPassthrough(string jobName, string path)
+        // TODO: Implement
+        /*[AcceptVerbs("GET", "HEAD", "PUT", "POST", "DELETE", "PATCH")]
+        public async Task<HttpResponseMessage> RequestPassthrough(string jobName, string path)
         {
             try
             {
-                // TODO: COME BACK AND IMPLEMENT
-                //return await _continuousJobsManager.HandleRequest(jobName, path, Request);
-                return NotFound();
+                // Convert HttpRequest to HttpRequestMessage
+                HttpRequestMessageFeature hreqmf = new HttpRequestMessageFeature(Request.HttpContext);
+                return await _continuousJobsManager.HandleRequest(jobName, path, hreqmf.HttpRequestMessage);
             }
             catch(Exception e)
             {
                 //_tracer.TraceError(e);
-                return NotFound(e);
+                HttpResponseMessage respMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                respMessage.Content = new StringContent(e.Message);
+                return respMessage;
             }
-        }
+        }*/
 
         private IActionResult ListJobsResponseBasedOnETag(IEnumerable<JobBase> jobs)
         {
@@ -341,15 +346,15 @@ namespace Kudu.Services.Jobs
 
         private string GetRequestETag()
         {
-            // TODO: REALLY NOT CONVINCED THAT THIS WORKS :)
-            HttpRequestMessage tempRequest = new HttpRequestMessage(HttpMethod.Get, "");
-            //Add the valid headers to the new request
             foreach (var header in Request.Headers)
             {
-                tempRequest.Headers.Add(header.Key, header.Value.ToString());
+                if (header.Key == "ETag")
+                {
+                    return header.Value;
+                }
             }
-
-            return tempRequest.Headers.IfNoneMatch.Select(header => header.Tag).FirstOrDefault();
+            return null;
+            //return tempRequest.Headers.IfNoneMatch.Select(header => header.Tag).FirstOrDefault();
         }
 
         private IActionResult RemoveJob<TJob>(string jobName, IJobsManager<TJob> jobsManager) where TJob : JobBase, new()
@@ -366,15 +371,21 @@ namespace Kudu.Services.Jobs
 
             // Get the script file name from the content disposition header
             string scriptFileName = null;
-            if (Request.Headers != null && Request.Headers.ContentDisposition.Contains("filename"))
+
+            if (Request.Headers != null && !Request.Headers.ContentDisposition.IsNullOrEmpty())
             {
                 //scriptFileName = Request.Headers.ContentDisposition.FileName;
                 
-                
                 // TODO: Revisit the reliability of this
                 // What is it grabbing here? Is it grabbing 'filename=test.txt' or just 'filename=' or just 'test.txt'
-                string[] filenameObject = Request.Headers.ContentDisposition.ToArray();
-                scriptFileName = Array.Find(filenameObject, e => e.Contains("filename"));
+                string[] filenameObject = Request.Headers.ContentDisposition.ToString().Split(";");
+                
+                // Find the part that contains 'filename=*'
+
+                // TODO: What happens if it can't find filename?
+                scriptFileName = Array.Find(filenameObject, e => e.Contains("filename="));
+                // Drop the 'filename=' and any spaces that may come before it
+                scriptFileName = scriptFileName.Substring(scriptFileName.IndexOf("filename=") + 9);
             }
 
             if (String.IsNullOrEmpty(scriptFileName))
@@ -386,12 +397,10 @@ namespace Kudu.Services.Jobs
             scriptFileName = scriptFileName.Trim('"');
             scriptFileName = Path.GetFileName(scriptFileName);
 
-            //Stream fileStream = await content.ReadAsStreamAsync();
+            /*Stream fileStream = await Request.BodyReader.ReadAsync();*/
             StreamReader reader = new StreamReader(Request.Body);
             Stream fileStream = reader.BaseStream;
-
-            // TODO: PRETTY SURE THE ABOVE STREAM IS NOT HOW THIS WORKS
-
+            
             try
             {
                 // Upload as a zip if content type is of a zipped file
@@ -414,6 +423,7 @@ namespace Kudu.Services.Jobs
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
+                errorMessage += "]\n" + ex.InnerException;
                 errorStatusCode = HttpStatusCode.InternalServerError;
                 //_tracer.TraceError(ex);
             }
@@ -457,13 +467,6 @@ namespace Kudu.Services.Jobs
         private IActionResult CreateErrorResponse(HttpStatusCode errorStatusCode, string errorMessage)
         {
             return StatusCode((int) errorStatusCode, errorMessage);
-        }
-
-        public static bool IsArmRequest(HttpRequest request)
-        {
-            return request != null &&
-                   request.Headers != null &&
-                   request.Headers.ContainsKey(GeoLocationHeaderKey);
         }
 
     }

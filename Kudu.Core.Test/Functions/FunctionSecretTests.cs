@@ -7,6 +7,7 @@ namespace Kudu.Core.Test.Functions
 {
     public class FunctionSecretTests
     {
+        /*
         [Fact]
         public void DecryptEncryptedKeyTests()
         {
@@ -24,5 +25,6 @@ namespace Kudu.Core.Test.Functions
             Assert.Equal($"unable to decrypt {malformattedKey}, the key is either invalid or malformed", exception.Message);
             Assert.Equal<Type>(typeof(CryptographicException), exception.InnerException.GetType());
         }
+        */
     }
 }

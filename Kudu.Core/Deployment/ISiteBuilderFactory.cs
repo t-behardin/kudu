@@ -1,6 +1,6 @@
 ﻿using Kudu.Contracts.Settings;
-using Kudu.Contracts.Tracing;
 using Kudu.Core.SourceControl;
+using Kudu.Contracts.Tracing;
 
 namespace Kudu.Core.Deployment
 {

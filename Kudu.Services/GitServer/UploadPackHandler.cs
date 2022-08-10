@@ -20,10 +20,8 @@
 
 #endregion
 
-using System.Net;
 using System.Web;
 using Kudu.Contracts.Infrastructure;
-using Kudu.Contracts.Settings;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Deployment;
 using Kudu.Core.SourceControl.Git;

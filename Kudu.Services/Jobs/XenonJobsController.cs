@@ -2,7 +2,6 @@
 using Kudu.Contracts.Jobs;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Hooks;
-using Kudu.Core.Infrastructure;
 using Kudu.Core.Jobs;
 using Kudu.Core.Tracing;
 using Kudu.Services.Arm;
@@ -38,50 +37,50 @@ namespace Kudu.Services.Jobs
         [HttpGet]
         public HttpResponseMessage ListAllJobs()
         {
-            return ForwardToContainer("");
+            return ForwardJobRequestToContainer("");
         }
 
         [HttpGet]
         public HttpResponseMessage ListContinuousJobs()
         {
-            return ForwardToContainer("continuouswebjobs/");
+            return ForwardJobRequestToContainer("continuouswebjobs/");
         }
 
         [HttpGet]
         public HttpResponseMessage GetContinuousJob(string jobName)
         {
-            return ForwardToContainer("continuouswebjobs/{jobName}");
+            return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}");
         }
 
         [HttpPost]
         public HttpResponseMessage EnableContinuousJob(string jobName)
         {
-            return ForwardToContainer("continuouswebjobs/{jobName}/start");
+            return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}/start");
         }
 
         [HttpPost]
         public HttpResponseMessage DisableContinuousJob(string jobName)
         {
-            return ForwardToContainer("continuouswebjobs/{jobName}/stop");
+            return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}/stop");
         }
 
         [HttpGet]
         public HttpResponseMessage GetContinuousJobSettings(string jobName)
         {
-            return ForwardToContainer("continuouswebjobs/{jobName}/settings");
+            return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}/settings");
         }
 
         [HttpPut]
         public HttpResponseMessage SetContinuousJobSettings(string jobName, JobSettings jobSettings)
         {
-            return ForwardToContainer("continuouswebjobs/{jobName}/settings");
+            return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}/settings");
         }
 
 
         [HttpGet]
         public HttpResponseMessage ListTriggeredJobs()
         {
-            return ForwardToContainer("triggeredwebjobs/");
+            return ForwardJobRequestToContainer("triggeredwebjobs/");
         }
 
         [HttpGet]
@@ -96,49 +95,56 @@ namespace Kudu.Services.Jobs
         [HttpGet]
         public HttpResponseMessage GetTriggeredJob(string jobName)
         {
-            return ForwardToContainer($"triggeredwebjobs/{jobName}");
+            return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}");
         }
 
         [HttpGet]
         public HttpResponseMessage GetTriggeredJobHistory(string jobName)
         {
-            return ForwardToContainer("triggeredwebjobs/{jobName}/history");
+            return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}/history");
         }
 
         [HttpGet]
         public HttpResponseMessage GetTriggeredJobRun(string jobName, string runId)
         {
-            return ForwardToContainer("triggeredwebjobs/{jobName}/history/{runId}");
+            return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}/history/{runId}");
         }
 
         [HttpPost]
         public HttpResponseMessage InvokeTriggeredJob(string jobName, string arguments = null)
         {
-            return ForwardToContainer("triggeredwebjobs/{jobName}/run");
+            return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}/run");
         }
 
         [HttpPut]
         public HttpResponseMessage CreateContinuousJob(string jobName)
         {
-            return ForwardToContainer("continuouswebjobs/{jobName}");
+            return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}");
         }
 
         [HttpPut]
         public HttpResponseMessage CreateContinuousJobArm(string jobName, ArmEntry<ContinuousJob> armContinuousJob)
         {
-            throw new NotImplementedException();
+            // OLD: return SetJobSettings(jobName, armContinuousJob.Properties.Settings, _continuousJobsManager);
+            // convert arm entry continuous job to settings for a job like the function normally would?
+            // What does this to string actually do? Does it create a json string like I want, or do it just print the object type
+            //Request.Headers.Add("settings", armContinuousJob.Properties.Settings.ToString());
+            HttpResponseMessage msg = new HttpResponseMessage(HttpStatusCode.OK);
+            msg.Content = new StringContent(armContinuousJob.Properties.ToString());
+            return msg;
+            //return ForwardJobRequestToContainer("continuouswebjobs/{jobName}/settings");
         }
 
         [HttpDelete]
         public HttpResponseMessage RemoveContinuousJob(string jobName)
         {
-            return ForwardToContainer("continuouswebjobs/{jobName}");
+            return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}");
         }
 
         [HttpPut]
         public HttpResponseMessage CreateTriggeredJob(string jobName)
         {
-            return ForwardToContainer("triggeredwebjobs/{jobName}");
+            return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}");
         }
 
         [HttpPut]
@@ -150,25 +156,25 @@ namespace Kudu.Services.Jobs
         [HttpDelete]
         public HttpResponseMessage RemoveTriggeredJob(string jobName)
         {
-            return ForwardToContainer("triggeredwebjobs/{jobName}");
+            return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}");
         }
 
         [HttpGet]
         public HttpResponseMessage GetTriggeredJobSettings(string jobName)
         {
-            return ForwardToContainer("triggeredwebjobs/{jobName}/settings");
+            return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}/settings");
         }
 
         [HttpPut]
         public HttpResponseMessage SetTriggeredJobSettings(string jobName, JobSettings jobSettings)
         {
-            return ForwardToContainer("triggeredwebjobs/{jobName}/settings");
+            return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}/settings");
         }
 
         [AcceptVerbs("GET", "HEAD", "PUT", "POST", "DELETE", "PATCH")]
         public HttpResponseMessage RequestPassthrough(string jobName, string path)
         {
-            return ForwardToContainer("/{jobName}/passthrough/{*path}");
+            return ForwardJobRequestToContainer($"/{jobName}/passthrough/{path}");
         }
 
         private HttpResponseMessage ListJobsResponseBasedOnETag(IEnumerable<JobBase> jobs)
@@ -282,6 +288,7 @@ namespace Kudu.Services.Jobs
         {
             try
             {
+
                 jobsManager.SetJobSettings(jobName, jobSettings);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
@@ -298,10 +305,12 @@ namespace Kudu.Services.Jobs
             return response;
         }
 
-        private HttpResponseMessage ForwardToContainer(string route)
+        private HttpResponseMessage ForwardJobRequestToContainer(string route)
         {
-            // Add "webjobs/" to the request and make sure to document this
-            throw new NotImplementedException();
+            using (_tracer.Step("XenonJobsController.ForwardToContainer"))
+            {
+                return Diagnostics.HttpRequestExtensions.ForwardToContainer($"/webjobs/{route}", Request);
+            }
         }
     }
 }

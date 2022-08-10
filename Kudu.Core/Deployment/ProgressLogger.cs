@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kudu.Contracts.Deployment;
+using System;
 
 namespace Kudu.Core.Deployment
 {

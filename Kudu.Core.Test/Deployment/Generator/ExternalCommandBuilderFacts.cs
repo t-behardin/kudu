@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using Kudu.Contracts;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Deployment;
 using Kudu.Core.Deployment.Generator;

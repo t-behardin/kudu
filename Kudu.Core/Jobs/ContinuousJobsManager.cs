@@ -11,6 +11,7 @@ using Kudu.Core.Tracing;
 using System.Net;
 using System.Threading.Tasks;
 using Kudu.Contracts.Tracing;
+using Kudu.Contracts;
 
 namespace Kudu.Core.Jobs
 {

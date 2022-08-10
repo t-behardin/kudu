@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Kudu.Contracts;
 using Kudu.Contracts.Infrastructure;
 using Kudu.Contracts.Settings;
 using Kudu.Contracts.Tracing;
@@ -201,7 +202,7 @@ namespace Kudu.Core.Helpers
                 ITracer bgTracer = null;
                 if (!string.IsNullOrEmpty(tracePath))
                 {
-                    bgTracer = new CascadeTracer(new XmlTracer(tracePath, TraceLevel.Verbose), new ETWTracer(requestId, "POST"));
+                    bgTracer = new CascadeTracer(new XmlTracer(tracePath, System.Diagnostics.TraceLevel.Verbose), new ETWTracer(requestId, "POST"));
                 }
 
                 // schedule sync triggers call in the background

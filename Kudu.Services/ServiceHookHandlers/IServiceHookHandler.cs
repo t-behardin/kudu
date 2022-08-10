@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
-using Kudu.Contracts.Tracing;
 using Kudu.Core.Deployment;
 using Kudu.Core.SourceControl;
+using Kudu.Contracts.Tracing;
 using Newtonsoft.Json.Linq;
 
 namespace Kudu.Services.ServiceHookHandlers

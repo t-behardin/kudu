@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using Kudu.Contracts.Tracing;
+using Kudu.Contracts.SourceControl;
 using Kudu.Core.Deployment;
 using Kudu.Core.SourceControl;
-using Kudu.Contracts.SourceControl;
 
 namespace Kudu.Services.ServiceHookHandlers
 {

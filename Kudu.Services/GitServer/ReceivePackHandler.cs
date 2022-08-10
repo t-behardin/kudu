@@ -29,10 +29,10 @@ using Kudu.Contracts.Tracing;
 using Kudu.Core;
 using Kudu.Core.Deployment;
 using Kudu.Core.Helpers;
-using Kudu.Core.SourceControl;
-using Kudu.Core.SourceControl.Git;
 using Kudu.Core.Tracing;
+using Kudu.Core.SourceControl.Git;
 using Kudu.Services.Infrastructure;
+using Kudu.Core.SourceControl;
 
 namespace Kudu.Services.GitServer
 {

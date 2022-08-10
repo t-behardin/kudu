@@ -4,10 +4,10 @@ using System.IO;
 using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Text;
-using Kudu.Contracts.Tracing;
 using Kudu.Core.Infrastructure;
 using Moq;
 using Xunit;
+using Kudu.Contracts.Tracing;
 
 namespace Kudu.Services.Test
 {
