@@ -1,5 +1,7 @@
 ﻿using System;
+using Kudu.Contracts;
 using Kudu.Contracts.Settings;
+using Kudu.Contracts.SourceControl;
 using Kudu.Core.SourceControl;
 using Kudu.Core.Tracing;
 using Moq;

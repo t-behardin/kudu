@@ -1,18 +1,23 @@
-// ------------------------------------------------------------------------------
-//  <copyright file="Host.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-//  </copyright>
-// ------------------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Kudu.Contracts.Jobs;
+using Kudu.Contracts.Settings;
+using Kudu.Core;
+using Kudu.Core.Helpers;
+using Kudu.Core.Hooks;
+using Kudu.Core.Infrastructure;
+using Kudu.Core.Jobs;
+using Kudu.Core.Settings;
+using Kudu.Core.Tracing;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -20,9 +25,59 @@ namespace Kudu.Agent
 {
     public static class Host
     {
+
+        public static ITriggeredJobsManager _triggeredJobsManager;
+        public static IContinuousJobsManager _continuousJobsManager;
+        public static TriggeredJobsScheduler _triggeredJobsScheduler;
+
         public static void Run(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
+            var serverConfiguration = new ServerConfiguration();
+            var etwTraceFactory = new TracerFactory(() => new ETWTracer(string.Empty, string.Empty));
+
+            string root = "C:/";//System.Environment.ExpandEnvironmentVariables(@"%HOME%"); //PathResolver.ResolveRootPath();  // TODO: FIX THIS IN CASE DIRECTORY DOES NOT EXIST
+            string siteRoot = Path.Combine(root, "");//Constants.SiteFolder);   // TODO: FIX
+            string repositoryPath = Path.Combine(siteRoot, "");//Constants.RepositoryPath); // TODO: FIX
+            string binPath = "./bin"; //HttpRuntime.BinDirectory;                                               // TODO WHAT SHOULD THIS ACTUALLY BE
+            string requestId = "0";//httpContext?.Request.GetRequestId();
+            IEnvironment environment = new Core.Environment(root, EnvironmentHelper.NormalizeBinPath(binPath), repositoryPath, requestId);
+
+            IDeploymentSettingsManager noContextDeploymentsSettingsManager =
+                new DeploymentSettingsManager(new XmlSettings.Settings(Path.Combine(environment.DeploymentsPath, Constants.DeploySettingsPath)));
+
+            var analytics = new Analytics(noContextDeploymentsSettingsManager,
+                                                                        serverConfiguration,
+                                                                        etwTraceFactory);
+
+            string lockPath = Path.Combine(environment.SiteRootPath, Constants.LockPath);
+            string deploymentLockPath = Path.Combine(lockPath, Constants.DeploymentLockFile);
+            string statusLockPath = Path.Combine(lockPath, Constants.StatusLockFile);
+            string hooksLockPath = Path.Combine(lockPath, Constants.HooksLockFile);
+            var statusLock = new LockFile(statusLockPath, etwTraceFactory, traceLock: false);
+            var hooksLock = new LockFile(hooksLockPath, etwTraceFactory);
+
+
+            _triggeredJobsManager = new AggregateTriggeredJobsManager(
+                etwTraceFactory,
+                environment,
+                noContextDeploymentsSettingsManager,
+                analytics,
+                new WebHooksManager(etwTraceFactory.GetTracer(), environment, hooksLock));
+
+            _triggeredJobsScheduler = new TriggeredJobsScheduler(
+                _triggeredJobsManager,
+                etwTraceFactory,
+                environment,
+                noContextDeploymentsSettingsManager,
+                analytics);
+
+            _continuousJobsManager = new AggregateContinuousJobsManager(
+                etwTraceFactory,
+                environment,
+                noContextDeploymentsSettingsManager,
+                analytics);
 
             CreateHostBuilder(args).Build().Run();
         }
@@ -35,6 +90,10 @@ namespace Kudu.Agent
                         .ConfigureServices(services =>
                         {
                             services.AddControllers();
+                            services.Configure<KestrelServerOptions>(options =>
+                            {
+                                options.AllowSynchronousIO = true;
+                            });
                         })
                         .UseKestrel(options =>
                         {
@@ -61,7 +120,7 @@ namespace Kudu.Agent
                     if (exception != null)
                     {
                         int errorCode = Marshal.GetHRForException(exception);
-                        Environment.Exit(errorCode);
+                        System.Environment.Exit(errorCode);
                     }
                 }
             }

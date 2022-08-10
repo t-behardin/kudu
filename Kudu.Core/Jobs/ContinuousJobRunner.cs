@@ -8,6 +8,7 @@ using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 using System.Net.Sockets;
 using System.Net;
+using Kudu.Contracts;
 
 namespace Kudu.Core.Jobs
 {
@@ -312,7 +313,7 @@ namespace Kudu.Core.Jobs
 
         public void EnableJob()
         {
-            OperationManager.Attempt(() => FileSystemHelpers.DeleteFile(_disableFilePath));
+            OperationManager.Attempt (() => FileSystemHelpers.DeleteFile(_disableFilePath));
         }
 
         protected override void UpdateStatus(IJobLogger logger, string status)

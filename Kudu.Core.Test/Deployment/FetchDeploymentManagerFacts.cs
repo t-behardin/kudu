@@ -10,10 +10,12 @@ using Kudu.Contracts.SourceControl;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Deployment;
 using Kudu.Core.Infrastructure;
-using Kudu.Core.SourceControl;
 using Moq;
 using Xunit;
 using Kudu.Services.ServiceHookHandlers;
+using Kudu.Contracts.Deployment;
+using Kudu.Contracts;
+using Kudu.Core.SourceControl;
 
 namespace Kudu.Core.Test
 {

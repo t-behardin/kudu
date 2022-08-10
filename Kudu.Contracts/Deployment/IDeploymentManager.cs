@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Kudu.Core.SourceControl;
 using Kudu.Contracts.Tracing;
+using Kudu.Core.SourceControl;
 
 namespace Kudu.Core.Deployment
 {

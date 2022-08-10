@@ -1,4 +1,6 @@
-﻿namespace Kudu.Core.Deployment
+﻿using Kudu.Contracts.Deployment;
+
+namespace Kudu.Core.Deployment
 {
     public class CascadeLogger : ILogger
     {

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
+using Kudu.Contracts;
 using Kudu.Contracts.Infrastructure;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Hooks;
 using Kudu.Core.Infrastructure;
+using System.Text.Json;
 using Moq;
 using Xunit;
 

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using System.Web;
 using Kudu.Contracts.Settings;
 using Kudu.Contracts.Tracing;
-using Kudu.Core.Tracing;
 using Kudu.Services.Infrastructure;
 using Kudu.Services.ServiceHookHandlers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Kudu.Core.Deployment;
 using Kudu.Core.Settings;
+using Kudu.Core.Tracing;
 
 namespace Kudu.Services
 {

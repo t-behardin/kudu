@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Web;
 using Kudu.Contracts.Tracing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Primitives;
 
 namespace Kudu.Core.Tracing
 {
@@ -108,7 +110,8 @@ namespace Kudu.Core.Tracing
             return _blackList.Contains(key);
         }
 
-        public static bool ShouldSkipRequest(HttpRequestBase request)
+#if NETFRAMEWORK
+        public static bool ShouldSkipRequest(System.Web.HttpRequestWrapper request)
         {
             // Filter out pings to applications.
             if (request.RawUrl == "/")
@@ -127,12 +130,12 @@ namespace Kudu.Core.Tracing
         }
 
         // From System.Web.Mvc.AjaxRequestExtensions.IsAjaxRequest
-        public static bool IsAjaxRequest(HttpRequestBase request)
+        public static bool IsAjaxRequest(System.Web.HttpRequestWrapper request)
         {
             return String.Equals("XMLHttpRequest", request.Headers["X-REQUESTED-WITH"], StringComparison.OrdinalIgnoreCase);
         }
 
-        public static bool MismatchedHostReferer(HttpRequestBase request)
+        public static bool MismatchedHostReferer(System.Web.HttpRequestWrapper request)
         {
             var referer = request.Headers["Referer"];
 
@@ -151,6 +154,7 @@ namespace Kudu.Core.Tracing
 
             return !String.Equals(request.Url.Host, refererUri.Host, StringComparison.OrdinalIgnoreCase);
         }
+#endif
 
         private static TraceLevel GetTraceLevel(IDictionary<string, string> attributes)
         {

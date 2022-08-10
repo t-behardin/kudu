@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using Kudu.Contracts;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Helpers;
 using Kudu.Core.Tracing;

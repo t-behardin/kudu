@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Kudu.Contracts;
 using Kudu.Core.Jobs;
 using Moq;
 using Xunit;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using Kudu.Contracts;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 

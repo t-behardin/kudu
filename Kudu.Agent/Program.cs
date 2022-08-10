@@ -1,13 +1,16 @@
-// ------------------------------------------------------------------------------
-//  <copyright file="Program.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-//  </copyright>
-// ------------------------------------------------------------------------------
-
+using Kudu.Contracts.Jobs;
+using Kudu.Contracts.Settings;
+using Kudu.Core;
+using Kudu.Core.Helpers;
+using Kudu.Core.Hooks;
+using Kudu.Core.Infrastructure;
+using Kudu.Core.Jobs;
+using Kudu.Core.Tracing;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Web;
 
 namespace Kudu.Agent
 {
@@ -20,7 +23,9 @@ namespace Kudu.Agent
 
             // StdOut/StdErr is piped by the ContainerProcess class in DWASSVC
             Trace.Listeners.Add(new ConsoleTraceListener());
+
             Host.Run(args);
+
         }
     }
 }

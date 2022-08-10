@@ -1,5 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.Diagnostics.Tracing;
+using System.Diagnostics.Tracing;
+#if NET6_0_OR_GREATER
+#else
+
+#endif
 
 namespace Kudu.Core.Tracing
 {

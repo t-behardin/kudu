@@ -13,6 +13,7 @@ using Kudu.Client.Infrastructure;
 using Kudu.Contracts.Jobs;
 using Kudu.Contracts.Settings;
 using Kudu.Core;
+using Kudu.Core.Commands;
 using Kudu.Core.Deployment;
 using Kudu.Core.Hooks;
 using Kudu.Core.Jobs;
