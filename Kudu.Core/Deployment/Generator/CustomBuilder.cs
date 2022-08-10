@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Kudu.Contracts;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Helpers;
 

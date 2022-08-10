@@ -4,14 +4,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Kudu.Agent.Contracts;
 using Kudu.Agent.Util;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication;
-using System.Threading;
+using Kudu.Core.Diagnostics;
 
 namespace Kudu.Agent.Controllers
 {
@@ -209,7 +205,7 @@ namespace Kudu.Agent.Controllers
                 info.PeakVirtualMemorySize64 = SafeGetValue(() => process.PeakVirtualMemorySize64, -1);
                 info.PrivateMemorySize64 = SafeGetValue(() => process.PrivateMemorySize64, -1);
                 info.ParentId = SafeGetValue(() => process.GetParentId(), 0);
-                info.Children = SafeGetValue(() => process.GetChildren(recursive: false).Select(c => c.Id), Enumerable.Empty<int>());
+                info.ChildrenIds = SafeGetValue(() => process.GetChildren(recursive: false).Select(c => c.Id), Enumerable.Empty<int>());
                 info.Threads = SafeGetValue(() => GetThreads(process), Enumerable.Empty<ProcessThreadInfo>());
                 info.Modules = SafeGetValue(() => GetModules(process), Enumerable.Empty<ProcessModuleInfo>());
                 info.TimeStamp = DateTime.UtcNow;

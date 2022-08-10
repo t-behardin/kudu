@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
-using Kudu.Core.SourceControl;
 using Newtonsoft.Json.Linq;
 using Kudu.Core.Deployment;
 using Kudu.Contracts.SourceControl;
+using Kudu.Contracts.Deployment;
+using Kudu.Core.SourceControl;
 
 namespace Kudu.Services.ServiceHookHandlers
 {

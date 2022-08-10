@@ -9,6 +9,7 @@ using Kudu.Contracts.Tracing;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 using System.Diagnostics;
+using Kudu.Contracts;
 
 namespace Kudu.Core.Jobs
 {
@@ -60,20 +61,20 @@ namespace Kudu.Core.Jobs
             int maxRuns = settings.GetWebJobsHistorySize() - 1;
 
             string historyPath = Path.Combine(environment.JobsDataPath, Constants.TriggeredPath, jobName);
-            DirectoryInfoBase historyDirectory = FileSystemHelpers.DirectoryInfoFromDirectoryName(historyPath);
+            IDirectoryInfo historyDirectory = FileSystemHelpers.DirectoryInfoFromDirectoryName(historyPath);
             if (!historyDirectory.Exists)
             {
                 return;
             }
 
-            DirectoryInfoBase[] historyRunsDirectories = historyDirectory.GetDirectories();
+            IDirectoryInfo[] historyRunsDirectories = historyDirectory.GetDirectories();
             if (historyRunsDirectories.Length <= maxRuns)
             {
                 return;
             }
 
             var directoriesToRemove = historyRunsDirectories.OrderByDescending(d => d.Name).Skip(maxRuns);
-            foreach (DirectoryInfoBase directory in directoriesToRemove)
+            foreach (IDirectoryInfo directory in directoriesToRemove)
             {
                 try
                 {

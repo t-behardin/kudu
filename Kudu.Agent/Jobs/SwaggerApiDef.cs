@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Kudu.Contracts.Jobs;
 
-namespace Kudu.Services.Jobs
+namespace Kudu.Agent.Jobs
 {
     public class SwaggerApiDef
     {

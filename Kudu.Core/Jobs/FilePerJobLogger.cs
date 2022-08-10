@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.IO.Abstractions;
+using Kudu.Contracts;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 
@@ -64,7 +65,7 @@ namespace Kudu.Core.Jobs
         {
             try
             {
-                FileInfoBase logFile = FileSystemHelpers.FileInfoFromFileName(_logFilePath);
+                IFileInfo logFile = FileSystemHelpers.FileInfoFromFileName(_logFilePath);
 
                 if (logFile.Length > MaxLogFileSize)
                 {

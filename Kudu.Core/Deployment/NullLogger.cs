@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Kudu.Contracts.Deployment;
+using System.Diagnostics;
 
 namespace Kudu.Core.Deployment
 {

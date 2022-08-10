@@ -2,11 +2,11 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Kudu.Core;
 using Kudu.Core.Helpers;
 using Kudu.Core.Tracing;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Infrastructure;
-using Kudu.Core;
 
 namespace Kudu.Services.Docker
 {

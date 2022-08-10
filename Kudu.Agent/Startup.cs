@@ -1,10 +1,6 @@
-// ------------------------------------------------------------------------------
-//  <copyright file="Startup.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-//  </copyright>
-// ------------------------------------------------------------------------------
-
 using System.IO;
+using System.Net.Http.Formatting;
+using System.Web.Http;
 using Kudu.Agent.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,17 +19,11 @@ namespace Kudu.Agent
             // Use basic authentication to validate user requests
             app.UseMiddleware<BasicAuthHelper>();
 
-
             app.UseRouting()
                .UseEndpoints(endpoints =>
                {
                    // Map attribute routed controllers.
                    endpoints.MapControllers();
-                   // Map custom route for canary inside main container.
-                   endpoints.MapGet("/mscanary471987.php", async context =>
-                   {
-                       await context.Response.WriteAsync("result=success");
-                   });
                });
             
             

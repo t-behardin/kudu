@@ -20,6 +20,7 @@ using Environment = System.Environment;
 using System.Diagnostics.CodeAnalysis;
 using Kudu.Services.Diagnostics;
 using Kudu.Core.Helpers;
+using Kudu.Contracts;
 
 namespace Kudu.Services.Performance
 {

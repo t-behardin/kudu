@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Kudu.Contracts.Tracing;
+using Kudu.Core.Commands;
+using Kudu.Contracts;
 
 namespace Kudu.Core.Commands
 {

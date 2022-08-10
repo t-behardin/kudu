@@ -44,7 +44,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.GetThread"))
             {
-                return ForwardToContainer($"{processId}/threads/{threadId}");
+                return ForwardProcessRequestToContainer($"{processId}/threads/{threadId}");
             }
         }
 
@@ -53,7 +53,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.GetAllThreads"))
             {
-                return ForwardToContainer($"{id}/threads");
+                return ForwardProcessRequestToContainer($"{id}/threads");
             }
         }
 
@@ -62,7 +62,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.GetModule"))
             {
-                return ForwardToContainer($"{id}/modules/{baseAddress}");
+                return ForwardProcessRequestToContainer($"{id}/modules/{baseAddress}");
             }
         }
 
@@ -71,7 +71,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.GetAllModules"))
             {
-                return ForwardToContainer($"{id}/modules");
+                return ForwardProcessRequestToContainer($"{id}/modules");
             }
         }
 
@@ -80,7 +80,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.GetEnvironments"))
             {
-                return ForwardToContainer($"{id}/environments/{filter}");
+                return ForwardProcessRequestToContainer($"{id}/environments/{filter}");
             }
         }
 
@@ -90,7 +90,7 @@ namespace Kudu.Services.Diagnostics
             var requestUri = Request.GetRequestUri(_settings.GetUseOriginalHostForReference()).GetLeftPart(UriPartial.Path).TrimEnd('/');
             using (_tracer.Step("XenonProcessController.GetAllProcesses"))
             {
-                return ForwardToContainer($"");
+                return ForwardProcessRequestToContainer($"");
             }
         }
 
@@ -99,7 +99,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.GetProcess"))
             {
-                return ForwardToContainer($"{id}");
+                return ForwardProcessRequestToContainer($"{id}");
             }
         }
 
@@ -108,7 +108,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.KillProcess"))
             {
-                return ForwardToContainer($"{id}");
+                return ForwardProcessRequestToContainer($"{id}");
             }
         }
 
@@ -117,7 +117,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.MiniDump"))
             {
-                return ForwardToContainer($"{id}/dump");
+                return ForwardProcessRequestToContainer($"{id}/dump");
             }
         }
 
@@ -126,7 +126,7 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.StartProfileAsync"))
             {
-                return ForwardToContainer($"{id}/profile/start");
+                return ForwardProcessRequestToContainer($"{id}/profile/start");
             }
         }
 
@@ -135,49 +135,15 @@ namespace Kudu.Services.Diagnostics
         {
             using (_tracer.Step("XenonProcessController.StopProfileAsync"))
             {
-                return ForwardToContainer($"{id}/profile/stop");
+                return ForwardProcessRequestToContainer($"{id}/profile/stop");
             }
         }
 
-        public HttpResponseMessage ForwardToContainer(string route)
+        public HttpResponseMessage ForwardProcessRequestToContainer(string route)
         {
             using (_tracer.Step("XenonProcessController.ForwardToContainer"))
             {
-                // Forward request to windows container
-
-                // Get the container address and the port kudu agent port
-                IDictionary environmentVariables = System.Environment.GetEnvironmentVariables();
-                if (environmentVariables.Contains("KUDU_AGENT_HOST") && environmentVariables.Contains("KUDU_AGENT_PORT")
-                    && environmentVariables.Contains("KUDU_AGENT_USR") && environmentVariables.Contains("KUDU_AGENT_PWD"))
-                {
-                    var containerAddress = environmentVariables["KUDU_AGENT_HOST"];
-                    var kuduContainerAgentPort = environmentVariables["KUDU_AGENT_PORT"];
-                    var kudu_agent_un = environmentVariables["KUDU_AGENT_USR"];
-                    var kudu_agent_pwd = environmentVariables["KUDU_AGENT_PWD"];
-
-                    string containerUrl = $"http://{containerAddress}:{kuduContainerAgentPort}/processes/{route}";
-
-                    // Request the kudu agent in the container to return list of processes
-                    HttpClient client = new HttpClient();
-                    string authHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{kudu_agent_un}:{kudu_agent_pwd}"));
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("BASIC", authHeader);
-                    HttpResponseMessage response = client.GetAsync(containerUrl).Result;
-                    if (response.IsSuccessStatusCode)
-                    {
-                        String urlContents = response.Content.ReadAsStringAsync().Result;
-                        return Request.CreateResponse(HttpStatusCode.OK, urlContents);
-
-                    }
-                    else
-                    {
-                        return Request.CreateResponse(response.StatusCode, response.ReasonPhrase);
-                    }
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
-                }
-
+                return HttpRequestExtensions.ForwardToContainer($"/processes/{route}", Request);
             }
         }
     }
