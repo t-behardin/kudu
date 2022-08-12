@@ -1,6 +1,4 @@
 using System.IO;
-using System.Net.Http.Formatting;
-using System.Web.Http;
 using Kudu.Agent.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
