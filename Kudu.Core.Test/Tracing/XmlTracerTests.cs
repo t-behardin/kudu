@@ -7,6 +7,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
@@ -19,7 +20,6 @@ namespace Kudu.Core.Test.Tracing
 {
     public class XmlTracerTests
     {
-        /*
         [Fact]
         public void TracerMaxXmlFilesTest()
         {
@@ -241,12 +241,12 @@ namespace Kudu.Core.Test.Tracing
         [InlineData(false, "/scm/info", null)]
         public void SkipRequestTracingTests(bool expected, string rawUrl, string userAgent)
         {
-            var mock = new Mock<HttpRequest>();
+            var mock = new Mock<HttpRequestBase>();
             mock.Setup(req => req.RawUrl).Returns(rawUrl);
             mock.Setup(req => req.UserAgent).Returns(userAgent);
-            HttpRequestWrapper wrappedRequest = new HttpRequestWrapper(mock.Object);
 
-            Assert.Equal(expected, TraceExtensions.ShouldSkipRequest(wrappedRequest));
+            HttpRequestBase request = mock.Object;
+            Assert.Equal(expected, TraceExtensions.ShouldSkipRequest(request));
         }
 
         [Theory]
@@ -257,12 +257,12 @@ namespace Kudu.Core.Test.Tracing
         [InlineData(false, null)]
         public void IsAjaxRequestTests(bool expected, string header)
         {
-            var mock = new Mock<HttpRequest>();
+            var mock = new Mock<HttpRequestBase>();
             var headers = new NameValueCollection();
             headers.Add("X-REQUESTED-WITH", header);
             mock.Setup(req => req.Headers).Returns(headers);
-            HttpRequestWrapper wrappedRequest = new HttpRequestWrapper(mock.Object);
-            Assert.Equal(expected, TraceExtensions.IsAjaxRequest(wrappedRequest));
+            HttpRequestBase request = mock.Object;
+            Assert.Equal(expected, TraceExtensions.IsAjaxRequest(request));
         }
 
         [Theory]
@@ -272,13 +272,13 @@ namespace Kudu.Core.Test.Tracing
         [InlineData(true, "null")]
         public void MismatchHostRefererTests(bool expected, string referer)
         {
-            var mock = new Mock<HttpRequest>();
+            var mock = new Mock<HttpRequestBase>();
             var headers = new NameValueCollection();
             headers.Add("Referer", referer);
             mock.Setup(req => req.Headers).Returns(headers);
             mock.Setup(req => req.Url).Returns(new Uri("https://tempuri.org/"));
-            HttpRequestWrapper wrappedRequest = new HttpRequestWrapper(mock.Object);
-            Assert.Equal(expected, TraceExtensions.MismatchedHostReferer(wrappedRequest));
+            HttpRequestBase request = mock.Object;
+            Assert.Equal(expected, TraceExtensions.MismatchedHostReferer(request));
         }
 
         public static IEnumerable<object[]> Requests
@@ -413,6 +413,5 @@ namespace Kudu.Core.Test.Tracing
                 return obj.Url.GetHashCode();
             }
         }
-        */
     }
 }

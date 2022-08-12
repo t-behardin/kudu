@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-#if NETFRAMEWORK
-using Microsoft.Azure.Web.DataProtection;
+﻿#if NETFRAMEWORK
+//using Microsoft.Azure.Web.DataProtection;
 #endif
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections;
@@ -35,17 +35,16 @@ namespace Kudu.Core.Infrastructure
         public static Tuple<string, string>[] GenerateSecretStringsKeyPair(int number)
         {
             var unencryptedToEncryptedKeyPair = new Tuple<string, string>[number];
-#if NETFRAMEWORK
+/*#if NETFRAMEWORK
             var protector = Microsoft.Azure.Web.DataProtection.DataProtectionProvider.CreateAzureDataProtector().CreateProtector(DefaultProtectorPurpose);
-#else
+#else*/
             // TODO: What key should be in the Create() part?
             var protector = DataProtectionProvider.Create("azure").CreateProtector(DefaultProtectorPurpose);
-#endif
+//#endif
             for (int i = 0; i < number; i++)
             {
                 string unencryptedKey = GenerateSecretString();
                 // TODO: FIX THIS BECAUSE IT FEELS SO WEIRD Encoding.Default.GetString(protector.Protect(Encoding.ASCII.GetBytes(unencryptedKey)))
-
                 unencryptedToEncryptedKeyPair[i] = new Tuple<string, string>(unencryptedKey, protector.Protect(unencryptedKey));
             }
             return unencryptedToEncryptedKeyPair;
@@ -55,12 +54,12 @@ namespace Kudu.Core.Infrastructure
         {
             try
             {
-#if NETFRAMEWORK
+/*#if NETFRAMEWORK
                 var protector = Microsoft.Azure.Web.DataProtection.DataProtectionProvider.CreateAzureDataProtector().CreateProtector(DefaultProtectorPurpose);
-#else
+#else*/
                 // TODO: What key should be in the Create() part?
                 var protector = DataProtectionProvider.Create("azure").CreateProtector(DefaultProtectorPurpose);
-#endif
+//#endif
                 return protector.Unprotect(content);
             }
             catch (CryptographicException ex)

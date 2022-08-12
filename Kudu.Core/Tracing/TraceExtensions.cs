@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Web;
 using Kudu.Contracts.Tracing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -111,7 +112,7 @@ namespace Kudu.Core.Tracing
         }
 
 #if NETFRAMEWORK
-        public static bool ShouldSkipRequest(System.Web.HttpRequestWrapper request)
+        public static bool ShouldSkipRequest(HttpRequestBase request)
         {
             // Filter out pings to applications.
             if (request.RawUrl == "/")
@@ -130,12 +131,12 @@ namespace Kudu.Core.Tracing
         }
 
         // From System.Web.Mvc.AjaxRequestExtensions.IsAjaxRequest
-        public static bool IsAjaxRequest(System.Web.HttpRequestWrapper request)
+        public static bool IsAjaxRequest(HttpRequestBase request)
         {
             return String.Equals("XMLHttpRequest", request.Headers["X-REQUESTED-WITH"], StringComparison.OrdinalIgnoreCase);
         }
 
-        public static bool MismatchedHostReferer(System.Web.HttpRequestWrapper request)
+        public static bool MismatchedHostReferer(HttpRequestBase request)
         {
             var referer = request.Headers["Referer"];
 
