@@ -19,7 +19,6 @@ namespace Kudu.Core.Test.Deployment
 {
     public class DeploymentManagerFacts
     {
-        /*
         [Fact]
         public void GetOrCreateStatusFileCreatesFileIfItDoesNotAlreadyExist()
         {
@@ -310,6 +309,5 @@ namespace Kudu.Core.Test.Deployment
 
             return new DeploymentManager(builderFactory, environment, traceFactory, analytics, settings, status, deploymentLock, globalLogger, hooksManager);
         }
-        */
     }
 }
