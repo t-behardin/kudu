@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using NuGet;
+using System;
 using System.Collections;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -31,7 +35,7 @@ namespace Kudu.Services.Diagnostics
                 string containerUrl = $"http://{containerAddress}:{kuduContainerAgentPort}" + route;
 
                 // Request the kudu agent in the container to return list of processes
-                HttpClient client = new HttpClient();
+                System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
                 string authHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{kudu_agent_un}:{kudu_agent_pwd}"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("BASIC", authHeader);
 
@@ -41,7 +45,7 @@ namespace Kudu.Services.Diagnostics
                 request.RequestUri = new Uri(containerUrl);
                 //client.SendAsync(request);
                 HttpResponseMessage response;
-                
+
                 // Determine the request method to use
                 if (request.Method == HttpMethod.Get)
                 {
@@ -53,7 +57,12 @@ namespace Kudu.Services.Diagnostics
                 }
                 else if (request.Method == HttpMethod.Put)
                 {
+                    var content = request.Content.ReadAsStringAsync();
+                    //return request.CreateResponse(HttpStatusCode.OK, content);
+                    //return request.CreateResponse(HttpStatusCode.OK, content);
                     response = client.PutAsync(containerUrl, request.Content).Result;
+
+                    //response = responseContent.ReadAsHttpResponseMessageAsync().Result;
                 }
                 else if (request.Method == HttpMethod.Delete)
                 {
@@ -63,21 +72,13 @@ namespace Kudu.Services.Diagnostics
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
-                
-                if (response.IsSuccessStatusCode)
-                {
-                    String urlContents = response.Content.ReadAsStringAsync().Result;
-                    return request.CreateResponse(HttpStatusCode.OK, urlContents);
-                }
-                else
-                {
-                    return request.CreateResponse(response.StatusCode, response.ReasonPhrase);
-                }
+
+                return response;
             }
             else
             {
                 // If these environment variables don't exist, then the container has not started yet
-                return request.CreateResponse(HttpStatusCode.NotFound, "The container cannot be reached. Please ensure that is running.");
+                return request.CreateResponse(HttpStatusCode.NotFound, "The container cannot be reached. Please ensure it is running.");
             }
         }
     }

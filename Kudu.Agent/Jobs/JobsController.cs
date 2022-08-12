@@ -23,7 +23,6 @@ using System.Threading.Tasks;
 using Kudu.Contracts;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using System.Text.Json.Nodes;
 using Kudu.Contracts.Infrastructure;
 using System.Text.Json.Serialization;

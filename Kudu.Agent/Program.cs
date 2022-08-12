@@ -19,7 +19,7 @@ namespace Kudu.Agent
         public static void Main(string[] args)
         {
             Trace.AutoFlush = true;
-            Trace.WriteLine("Kudu Agent");
+            Trace.WriteLine("Kudu Container Services");
 
             // StdOut/StdErr is piped by the ContainerProcess class in DWASSVC
             Trace.Listeners.Add(new ConsoleTraceListener());

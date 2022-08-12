@@ -12,6 +12,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -168,6 +171,7 @@ namespace Kudu.Services.Jobs
         [HttpPut]
         public HttpResponseMessage SetTriggeredJobSettings(string jobName, JobSettings jobSettings)
         {
+            Request.Content = new StringContent(JsonSerializer.Serialize(jobSettings), Encoding.UTF8, "application/json");
             return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}/settings");
         }
 

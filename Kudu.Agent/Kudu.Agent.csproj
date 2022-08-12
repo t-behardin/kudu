@@ -16,6 +16,7 @@
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kudu.ContainerServices.Core\Kudu.ContainerServices.Core.csproj" />
     <ProjectReference Include="..\Kudu.Contracts\Kudu.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
