@@ -313,7 +313,7 @@ namespace Kudu.Core.Jobs
 
         public void EnableJob()
         {
-            OperationManager.Attempt (() => FileSystemHelpers.DeleteFile(_disableFilePath));
+            OperationManager.Attempt(() => FileSystemHelpers.DeleteFile(_disableFilePath));
         }
 
         protected override void UpdateStatus(IJobLogger logger, string status)

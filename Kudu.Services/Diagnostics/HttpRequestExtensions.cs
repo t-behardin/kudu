@@ -40,10 +40,7 @@ namespace Kudu.Services.Diagnostics
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("BASIC", authHeader);
 
                 // Convert the request's address to be the container's address
-
-                // TODO: TEST THAT THIS KEEPS CONTAINER AUTHORIZATION
                 request.RequestUri = new Uri(containerUrl);
-                //client.SendAsync(request);
                 HttpResponseMessage response;
 
                 // Determine the request method to use
@@ -58,11 +55,7 @@ namespace Kudu.Services.Diagnostics
                 else if (request.Method == HttpMethod.Put)
                 {
                     var content = request.Content.ReadAsStringAsync();
-                    //return request.CreateResponse(HttpStatusCode.OK, content);
-                    //return request.CreateResponse(HttpStatusCode.OK, content);
                     response = client.PutAsync(containerUrl, request.Content).Result;
-
-                    //response = responseContent.ReadAsHttpResponseMessageAsync().Result;
                 }
                 else if (request.Method == HttpMethod.Delete)
                 {

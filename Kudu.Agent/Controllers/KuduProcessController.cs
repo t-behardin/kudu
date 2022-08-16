@@ -36,7 +36,7 @@ namespace Kudu.Agent.Controllers
                 return NotFound();
             }
 
-            ProcessInfo info = GetProcessInfo(p, Request.GetDisplayUrl().ToString(), details: true);
+            ProcessInfo info = GetProcessInfo(p, details: true);
 
             return Ok(info);
         }
