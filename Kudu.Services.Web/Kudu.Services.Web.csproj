@@ -268,7 +268,6 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="libman.json" />
     <None Include="packages.config" />
     <Content Include="ProcessExplorer\Default.cshtml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
