@@ -38,7 +38,6 @@ namespace Kudu.Agent.Security
                 throw new NotImplementedException();
             }
 
-            /*
             var authHeader = AuthenticationHeaderValue.Parse(context.Request.Headers["Authorization"]);
             var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
             var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':', 2);
@@ -55,15 +54,14 @@ namespace Kudu.Agent.Security
                 LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT,
                 out safeAccessTokenHandle);
             if (success)
-            {*/
-                // may need to do something here to say that we are now verified!
+            {
                 await _requestDelegate(context);
-            /*}
+            }
             else
             {
                 context.Response.StatusCode = 401; //UnAuthorized
                 await context.Response.WriteAsync("Username or password is incorrect.");
-            }*/
+            }
         }
     }
 }
