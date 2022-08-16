@@ -45,12 +45,6 @@ namespace Kudu.Core.Diagnostics
         [JsonPropertyName("children"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public IEnumerable<Uri> Children { get; set; }
 
-        [JsonPropertyName("parent_id"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int ParentId { get; set; }
-
-        [JsonPropertyName("children_ids"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public IEnumerable<int> ChildrenIds { get; set; }
-
         [JsonPropertyName("threads"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public IEnumerable<ProcessThreadInfo> Threads { get; set; }
 
