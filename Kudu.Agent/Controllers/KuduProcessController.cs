@@ -204,14 +204,18 @@ namespace Kudu.Agent.Controllers
                 info.VirtualMemorySize64 = SafeGetValue(() => process.VirtualMemorySize64, -1);
                 info.PeakVirtualMemorySize64 = SafeGetValue(() => process.PeakVirtualMemorySize64, -1);
                 info.PrivateMemorySize64 = SafeGetValue(() => process.PrivateMemorySize64, -1);
-                info.ParentId = SafeGetValue(() => process.GetParentId(), 0);
-                info.ChildrenIds = SafeGetValue(() => process.GetChildren(recursive: false).Select(c => c.Id), Enumerable.Empty<int>());
+                info.Parent = new Uri("http://0"); //issue creating URI based on this!
+                //.Parent = new Uri(SafeGetValue(() => process.GetParentId(), 0).ToString());
+                //info.Children = SafeGetValue(() => process.GetChildren(recursive: false).Select(c => c.Id), Enumerable.Empty<int>());
+                
+                // todo: this definitely has issues
+                info.Children = SafeGetValue(() => process.GetChildren(recursive: false), Enumerable.Empty<Process>()).Select(c => new Uri("http://" + c.Id.ToString()));
                 info.Threads = SafeGetValue(() => GetThreads(process), Enumerable.Empty<ProcessThreadInfo>());
                 info.Modules = SafeGetValue(() => GetModules(process), Enumerable.Empty<ProcessModuleInfo>());
                 info.TimeStamp = DateTime.UtcNow;
                 info.EnvironmentVariables = SafeGetValue(process.GetEnvironmentVariables, new Dictionary<string, string>());
                 info.CommandLine = SafeGetValue(process.GetCommandLine, null);
-                // No supported for Xenon yet!
+                // Not supported for Xenon yet!
                 info.OpenFileHandles = Enumerable.Empty<string>(); // SafeGetValue(() => GetOpenFileHandles(process.Id), Enumerable.Empty<string>());
                 info.IsProfileRunning = false;          // ProfileManager.IsProfileRunning(process.Id);
                 info.IsIisProfileRunning = false;       // ProfileManager.IsIisProfileRunning(process.Id);

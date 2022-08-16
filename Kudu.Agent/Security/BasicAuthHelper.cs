@@ -11,7 +11,6 @@ using System.Security;
 using System.Security.Principal;
 using Microsoft.Win32.SafeHandles;
 using Microsoft.AspNetCore.Authentication;
-using System.DirectoryServices.AccountManagement;
 using System.Runtime.Versioning;
 using Kudu.Agent.Util;
 

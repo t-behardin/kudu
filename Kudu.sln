@@ -40,9 +40,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kudu.Services.Web", "Kudu.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kudu.Contracts", "Kudu.Contracts\Kudu.Contracts.csproj", "{8560A693-E241-4550-9C80-90710EC3A8C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kudu.Agent", "Kudu.Agent\Kudu.Agent.csproj", "{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kudu.ContainerServices.Core", "Kudu.ContainerServices.Core\Kudu.ContainerServices.Core.csproj", "{82FF120B-EB48-49FD-82B4-A170B1039530}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kudu.ContainerServices.Core", "Kudu.ContainerServices.Core\Kudu.ContainerServices.Core.csproj", "{BBAE7801-9CCF-4F29-9A41-9342A05552B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kudu.Agent", "Kudu.Agent\Kudu.Agent.csproj", "{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -212,6 +212,18 @@ Global
 		{8560A693-E241-4550-9C80-90710EC3A8C4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8560A693-E241-4550-9C80-90710EC3A8C4}.Release|x86.ActiveCfg = Release|Any CPU
 		{8560A693-E241-4550-9C80-90710EC3A8C4}.Release|x86.Build.0 = Release|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Debug|x86.Build.0 = Debug|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Release|x86.ActiveCfg = Release|Any CPU
+		{82FF120B-EB48-49FD-82B4-A170B1039530}.Release|x86.Build.0 = Release|Any CPU
 		{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -224,18 +236,6 @@ Global
 		{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}.Release|x86.ActiveCfg = Release|Any CPU
 		{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}.Release|x86.Build.0 = Release|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Debug|x86.Build.0 = Debug|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Release|x86.ActiveCfg = Release|Any CPU
-		{BBAE7801-9CCF-4F29-9A41-9342A05552B3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
