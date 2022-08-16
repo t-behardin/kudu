@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Kudu.Agent.Util;
 using Microsoft.AspNetCore.Http;
 using Kudu.Core.Diagnostics;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Kudu.Agent.Controllers
 {
@@ -34,7 +36,7 @@ namespace Kudu.Agent.Controllers
                 return NotFound();
             }
 
-            ProcessInfo info = GetProcessInfo(p, details: true);
+            ProcessInfo info = GetProcessInfo(p, Request.GetDisplayUrl().ToString(), details: true);
 
             return Ok(info);
         }
@@ -182,6 +184,7 @@ namespace Kudu.Agent.Controllers
             {
                 Id = process.Id,
                 Name = process.ProcessName,
+                MachineName = Environment.MachineName,
                 UserName = SafeGetValue(process.GetUserName, null)
             };
 
