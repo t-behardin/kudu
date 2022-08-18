@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
-using Kudu.Agent.Util;
+using Kudu.ContainerServices.Agent.Util;
 using Microsoft.AspNetCore.Http;
 using Kudu.Core.Diagnostics;
-using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Linq;
 
-namespace Kudu.Agent.Controllers
+namespace Kudu.ContainerServices.Agent.Controllers
 {
     [ApiController]
     [Route("/processes")]
@@ -22,7 +22,7 @@ namespace Kudu.Agent.Controllers
         {
             IEnumerable<ProcessInfo> processes = Process.GetProcesses()
                 .Where(p => !AppServicePlatformProcess(p))
-                .Select(p => GetProcessInfo(p, details: false));
+                .Select(p => GetProcessInfo(p, details: false, $"{p.Id}"));
 
             return Ok(processes);
         }
@@ -36,7 +36,7 @@ namespace Kudu.Agent.Controllers
                 return NotFound();
             }
 
-            ProcessInfo info = GetProcessInfo(p, details: true);
+            ProcessInfo info = GetProcessInfo(p, details: true, id.ToString());
 
             return Ok(info);
         }
@@ -82,7 +82,7 @@ namespace Kudu.Agent.Controllers
                 return NotFound();
             }
 
-            ProcessThreadInfo threadInfo = GetProcessThreadInfo(thread, details: true);
+            ProcessThreadInfo threadInfo = GetProcessThreadInfo(thread, processId, details: true);
 
             return Ok(threadInfo);
         }
@@ -178,12 +178,19 @@ namespace Kudu.Agent.Controllers
             return Process.GetProcessById(processId);
         }
 
-        private static ProcessInfo GetProcessInfo(Process process, bool details = false)
-        {
+        private static ProcessInfo GetProcessInfo(Process process, bool details = false, string path = "")
+        {            
+            var href = $"https://{Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME")}/api/processes/{path}";
+            if (href.EndsWith("/0", StringComparison.OrdinalIgnoreCase))
+            {
+                href = href.Substring(0, href.Length - 1) + process.Id;
+            }
+            var selfLink = new Uri(href);
             ProcessInfo info = new ProcessInfo()
             {
                 Id = process.Id,
                 Name = process.ProcessName,
+                Href = selfLink,
                 MachineName = Environment.MachineName,
                 UserName = SafeGetValue(process.GetUserName, null)
             };
@@ -242,7 +249,7 @@ namespace Kudu.Agent.Controllers
         private static IEnumerable<ProcessThreadInfo> GetThreads(Process process)
         {
             IEnumerable<ProcessThread> threads = process.Threads.Cast<ProcessThread>();
-            IEnumerable<ProcessThreadInfo> threadsInfo = threads.Select(t => GetProcessThreadInfo(t, details: false));
+            IEnumerable<ProcessThreadInfo> threadsInfo = threads.Select(t => GetProcessThreadInfo(t, process.Id, details: false));
 
             return threadsInfo;
         }
@@ -278,12 +285,14 @@ namespace Kudu.Agent.Controllers
             return moduleInfo;
         }
 
-        private static ProcessThreadInfo GetProcessThreadInfo(ProcessThread thread, bool details = false)
+        private static ProcessThreadInfo GetProcessThreadInfo(ProcessThread thread, int pid, bool details = false)
         {
+            var href = $"https://{Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME")}/api/processes/{pid}/threads/{thread.Id}";
             ProcessThreadInfo threadInfo = new ProcessThreadInfo()
             {
                 Id = thread.Id,
-                State = thread.ThreadState.ToString()
+                State = thread.ThreadState.ToString(),
+                Href = new Uri(href)
             };
 
             if (details)

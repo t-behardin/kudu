@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kudu.Agent.Util
+namespace Kudu.ContainerServices.Agent.Util
 {
     public class OSDetector
     {

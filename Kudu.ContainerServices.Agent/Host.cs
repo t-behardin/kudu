@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Kudu.Agent
+namespace Kudu.ContainerServices.Agent
 {
     public static class Host
     {

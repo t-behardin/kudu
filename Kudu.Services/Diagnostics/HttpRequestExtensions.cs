@@ -39,8 +39,6 @@ namespace Kudu.Services.Diagnostics
                 string authHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{kudu_agent_un}:{kudu_agent_pwd}"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("BASIC", authHeader);
 
-                // Convert the request's address to be the container's address
-                request.RequestUri = new Uri(containerUrl);
                 HttpResponseMessage response;
 
                 // Determine the request method to use

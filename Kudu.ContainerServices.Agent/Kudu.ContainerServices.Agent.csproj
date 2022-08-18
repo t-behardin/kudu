@@ -3,8 +3,8 @@
     <TargetFrameworks>net6.0</TargetFrameworks>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <OutputType>Exe</OutputType>
-    <AssemblyName>kagent</AssemblyName>
-    <ProjectGuid>{16AB6147-8BC4-46F8-8DAD-CFA3D5D9F9A0}</ProjectGuid>
+    <AssemblyName>Kudu.ContainerServices.Agent</AssemblyName>
+    <ProjectGuid>{49DBD879-FC65-4806-8BB4-A836247361E4}</ProjectGuid>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	<OutDir>$(ProjectDir)bin\</OutDir>

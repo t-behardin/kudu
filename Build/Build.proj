@@ -13,7 +13,7 @@
         <ServiceSiteTargetPath Condition="$(ServiceSiteTargetPath) == ''">$(ArtifactsPath)\SiteExtensions\Kudu</ServiceSiteTargetPath>
         <ServiceSiteProject>$(ProjectRoot)\Kudu.Services.Web\Kudu.Services.Web.csproj</ServiceSiteProject>
         <ContainerExtensionTargetPath Condition="$(ContainerExtensionTargetPath) == ''">$(ServiceSiteTargetPath)\ContainerServices</ContainerExtensionTargetPath>
-		<ContainerExtensionProject>$(ProjectRoot)\Kudu.Agent\Kudu.Agent.csproj</ContainerExtensionProject>
+		<ContainerExtensionProject>$(ProjectRoot)\Kudu.ContainerServices.Agent\Kudu.ContainerServices.Agent.csproj</ContainerExtensionProject>
         <ClientSiteTargetPath Condition="$(ClientSiteTargetPath) == ''">$(ArtifactsPath)\KuduWeb</ClientSiteTargetPath>
         <ClientSiteProject>$(ProjectRoot)\Kudu.Web\Kudu.Web.csproj</ClientSiteProject>
         <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
@@ -78,7 +78,7 @@
                              RuntimeIdentifier=win10-x64"/>
 
 		<ItemGroup>
-			<ContainerExtensionFilesToCopy Include="$(ProjectRoot)\Kudu.Agent\bin*\*"/>
+			<ContainerExtensionFilesToCopy Include="$(ProjectRoot)\Kudu.ContainerServices.Agent\bin*\*"/>
 		</ItemGroup>
 
 		<Copy SourceFiles="%(ContainerExtensionFilesToCopy.FullPath)" DestinationFiles="$(ContainerExtensionTargetPath)\%(RecursiveDir)%(Filename)%(Extension)"

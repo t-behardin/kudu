@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 
-namespace Kudu.Agent.Util
+namespace Kudu.ContainerServices.Agent.Util
 {
     public static class ProcessExtensions
     {
