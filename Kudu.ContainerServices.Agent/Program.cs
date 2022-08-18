@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Web;
 
-namespace Kudu.Agent
+namespace Kudu.ContainerServices.Agent
 {
     public static class Program
     {

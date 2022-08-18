@@ -27,11 +27,10 @@ using System.Text.Json.Nodes;
 using Kudu.Contracts.Infrastructure;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Extensions;
-using Kudu.Agent.Util;
+using Kudu.ContainerServices.Agent.Util;
 
-namespace Kudu.Agent.Jobs
+namespace Kudu.ContainerServices.Agent.Jobs
 {
-    //[ArmControllerConfiguration]
     [ApiController]
     [Route("/webjobs")]
     public class JobsController : ControllerBase

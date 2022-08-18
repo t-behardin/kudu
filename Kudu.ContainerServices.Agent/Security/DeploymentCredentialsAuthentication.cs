@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Kudu.Agent.Security
+namespace Kudu.ContainerServices.Agent.Security
 {
     public class DeploymentCredentialsAuthentication : AuthenticationHandler<DeploymentCredentialsAuthenticationOptions>
     {

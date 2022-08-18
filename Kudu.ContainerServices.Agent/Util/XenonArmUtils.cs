@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
-namespace Kudu.Agent.Util
+namespace Kudu.ContainerServices.Agent.Util
 {
     // Copy of ArmUtils needed for the agent
     public class XenonArmUtils

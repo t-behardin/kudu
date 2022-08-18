@@ -12,9 +12,9 @@ using System.Security.Principal;
 using Microsoft.Win32.SafeHandles;
 using Microsoft.AspNetCore.Authentication;
 using System.Runtime.Versioning;
-using Kudu.Agent.Util;
+using Kudu.ContainerServices.Agent.Util;
 
-namespace Kudu.Agent.Security
+namespace Kudu.ContainerServices.Agent.Security
 {   
     public class BasicAuthHelper : ControllerBase
     {

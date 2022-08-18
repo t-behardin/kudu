@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 
-namespace Kudu.Agent.Security
+namespace Kudu.ContainerServices.Agent.Security
 {
     public class DeploymentCredentialsAuthenticationOptions : AuthenticationSchemeOptions
     {
