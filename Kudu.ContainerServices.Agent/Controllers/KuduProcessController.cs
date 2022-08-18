@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Kudu.Core.Diagnostics;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
+using Kudu.Contracts.Tracing;
 
 namespace Kudu.ContainerServices.Agent.Controllers
 {
@@ -214,12 +215,8 @@ namespace Kudu.ContainerServices.Agent.Controllers
                 info.VirtualMemorySize64 = SafeGetValue(() => process.VirtualMemorySize64, -1);
                 info.PeakVirtualMemorySize64 = SafeGetValue(() => process.PeakVirtualMemorySize64, -1);
                 info.PrivateMemorySize64 = SafeGetValue(() => process.PrivateMemorySize64, -1);
-                info.Parent = new Uri("http://0"); //issue creating URI based on this!
-                //.Parent = new Uri(SafeGetValue(() => process.GetParentId(), 0).ToString());
-                //info.Children = SafeGetValue(() => process.GetChildren(recursive: false).Select(c => c.Id), Enumerable.Empty<int>());
-                
-                // todo: this definitely has issues
-                info.Children = SafeGetValue(() => process.GetChildren(recursive: false), Enumerable.Empty<Process>()).Select(c => new Uri("http://" + c.Id.ToString()));
+                info.Parent = new Uri(selfLink, SafeGetValue(() => process.GetParentId(), 0).ToString());
+                info.Children = SafeGetValue(() => process.GetChildren(recursive: false), Enumerable.Empty<Process>()).Select(c => new Uri(selfLink, c.Id.ToString()));
                 info.Threads = SafeGetValue(() => GetThreads(process), Enumerable.Empty<ProcessThreadInfo>());
                 info.Modules = SafeGetValue(() => GetModules(process), Enumerable.Empty<ProcessModuleInfo>());
                 info.TimeStamp = DateTime.UtcNow;
