@@ -69,7 +69,9 @@ namespace Kudu.Services.Diagnostics
             else
             {
                 // If these environment variables don't exist, then the container has not started yet
-                return request.CreateResponse(HttpStatusCode.NotFound, "The container cannot be reached. Please ensure it is running.");
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
+                response.Content = new StringContent("The container cannot be reached. Please ensure it is running.");
+                return response;
             }
         }
     }
