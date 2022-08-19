@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Kudu.Agent": {
+    "Kudu.ContainerServices.Agent": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
