@@ -17,6 +17,7 @@ using Kudu.Core.Jobs;
 using Kudu.Core.Settings;
 using Kudu.Core.Tracing;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,11 +38,11 @@ namespace Kudu.ContainerServices.Agent
             var serverConfiguration = new ServerConfiguration();
             var etwTraceFactory = new TracerFactory(() => new ETWTracer(string.Empty, string.Empty));
 
-            string root = "C:/";//System.Environment.ExpandEnvironmentVariables(@"%HOME%"); //PathResolver.ResolveRootPath();  // TODO: FIX THIS IN CASE DIRECTORY DOES NOT EXIST
-            string siteRoot = Path.Combine(root, "");//Constants.SiteFolder);   // TODO: FIX
-            string repositoryPath = Path.Combine(siteRoot, "");//Constants.RepositoryPath); // TODO: FIX
-            string binPath = "./bin"; //HttpRuntime.BinDirectory;                                               // TODO WHAT SHOULD THIS ACTUALLY BE
-            string requestId = "0";//httpContext?.Request.GetRequestId();
+            string root = System.Environment.ExpandEnvironmentVariables(@"%HOME%");
+            string siteRoot = Path.Combine(root, Constants.SiteFolder);
+            string repositoryPath = Path.Combine(siteRoot, Constants.RepositoryPath);
+            string binPath = "C:\\bin"; // Todo: is this ok?
+            string requestId = null;
             IEnvironment environment = new Core.Environment(root, EnvironmentHelper.NormalizeBinPath(binPath), repositoryPath, requestId);
 
             IDeploymentSettingsManager noContextDeploymentsSettingsManager =

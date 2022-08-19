@@ -247,7 +247,7 @@ namespace Kudu.ContainerServices.Agent.Jobs
 
                 //System.IO.DriveInfo di = new System.IO.DriveInfo(@"C:\");
                 
-                
+                // TODO: FIX THIS SECTION!
                 // TODO: DISCUSS WHAT DIRECTORY TO CHECK. Need this to be linux compatibile.
                 DirectoryInfo di = new DirectoryInfo(@"~");
                 if ((di.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
@@ -395,7 +395,6 @@ namespace Kudu.ContainerServices.Agent.Jobs
             scriptFileName = scriptFileName.Trim('"');
             scriptFileName = Path.GetFileName(scriptFileName);
 
-            /*Stream fileStream = await Request.BodyReader.ReadAsync();*/
             StreamReader reader = new StreamReader(Request.Body);
             Stream fileStream = reader.BaseStream;
             
