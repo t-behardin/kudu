@@ -40,7 +40,6 @@ namespace Kudu.Services.Diagnostics
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("BASIC", authHeader);
 
                 HttpResponseMessage response;
-
                 // Determine the request method to use
                 if (request.Method == HttpMethod.Get)
                 {
@@ -52,7 +51,6 @@ namespace Kudu.Services.Diagnostics
                 }
                 else if (request.Method == HttpMethod.Put)
                 {
-                    var content = request.Content.ReadAsStringAsync();
                     response = client.PutAsync(containerUrl, request.Content).Result;
                 }
                 else if (request.Method == HttpMethod.Delete)

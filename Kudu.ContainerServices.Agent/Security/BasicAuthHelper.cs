@@ -39,6 +39,12 @@ namespace Kudu.ContainerServices.Agent.Security
             }
 
             var authHeader = AuthenticationHeaderValue.Parse(context.Request.Headers["Authorization"]);
+            if (authHeader == null)
+            {
+                // Should never be reached. Web worker should always add authentication
+                context.Response.StatusCode = ((int) HttpStatusCode.Unauthorized);
+                await context.Response.WriteAsync("No authentication header attached.");
+            }
             var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
             var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':', 2);
             var username = credentials[0];
