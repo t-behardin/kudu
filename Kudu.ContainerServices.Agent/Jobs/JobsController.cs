@@ -28,6 +28,8 @@ using Kudu.Contracts.Infrastructure;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Kudu.ContainerServices.Agent.Util;
+using NuGet.Packaging.Signing;
+using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 
 namespace Kudu.ContainerServices.Agent.Jobs
 {
@@ -126,7 +128,6 @@ namespace Kudu.ContainerServices.Agent.Jobs
         public IActionResult SetContinuousJobSettings(string jobName, JobSettings jobSettings)
         {
             throw new NotImplementedException();
-            //return SetJobSettings(jobName, jobSettings, _continuousJobsManager);
         }
 
         [HttpGet("triggeredwebjobs")]
@@ -236,23 +237,10 @@ namespace Kudu.ContainerServices.Agent.Jobs
             catch
             {
                 // There should be another way to check if the container is read only. We can do that right here, right?
-                // TODO: This seems very important but like a lot of code that will need to be ported in. Let's discuss
-                /*if (FileSystemHelpers.IsFileSystemReadOnly())
+                if (FileSystemHelpers.IsFileSystemReadOnly())
                 {
                     // return 503 to ask caller to retry, since ReadOnly file system should be temporary
                     return StatusCode((int) HttpStatusCode.ServiceUnavailable);
-                }*/
-                
-                // Check if file system is read only
-
-                //System.IO.DriveInfo di = new System.IO.DriveInfo(@"C:\");
-                
-                // TODO: FIX THIS SECTION!
-                // TODO: DISCUSS WHAT DIRECTORY TO CHECK. Need this to be linux compatibile.
-                DirectoryInfo di = new DirectoryInfo(@"~");
-                if ((di.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                {
-                    return StatusCode((int)HttpStatusCode.ServiceUnavailable);
                 }
 
                 throw;
@@ -307,11 +295,11 @@ namespace Kudu.ContainerServices.Agent.Jobs
             return SetJobSettings(jobName, jobSettings, _triggeredJobsManager);
         }
 
-        // TODO: Implement
-        /*[AcceptVerbs("GET", "HEAD", "PUT", "POST", "DELETE", "PATCH")]
-        public async Task<HttpResponseMessage> RequestPassthrough(string jobName, string path)
+        [AcceptVerbs("GET", "HEAD", "PUT", "POST", "DELETE", "PATCH")]
+        [Route("continuouswebjobs/{jobName}/passthrough/{path}")]
+        public async Task<Object> RequestPassthrough(string jobName, string path)
         {
-            try
+           try
             {
                 // Convert HttpRequest to HttpRequestMessage
                 HttpRequestMessageFeature hreqmf = new HttpRequestMessageFeature(Request.HttpContext);
@@ -320,11 +308,9 @@ namespace Kudu.ContainerServices.Agent.Jobs
             catch(Exception e)
             {
                 //_tracer.TraceError(e);
-                HttpResponseMessage respMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                respMessage.Content = new StringContent(e.Message);
-                return respMessage;
+                return BadRequest(e.Message);
             }
-        }*/
+        }
 
         private IActionResult ListJobsResponseBasedOnETag(IEnumerable<JobBase> jobs)
         {

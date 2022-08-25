@@ -171,6 +171,7 @@ namespace Kudu.Services.Jobs
         [HttpPut]
         public HttpResponseMessage SetTriggeredJobSettings(string jobName, JobSettings jobSettings)
         {
+            // Re-add the settings to the request
             Request.Content = new StringContent(JsonSerializer.Serialize(jobSettings), Encoding.UTF8, "application/json");
             return ForwardJobRequestToContainer($"triggeredwebjobs/{jobName}/settings");
         }
@@ -178,135 +179,7 @@ namespace Kudu.Services.Jobs
         [AcceptVerbs("GET", "HEAD", "PUT", "POST", "DELETE", "PATCH")]
         public HttpResponseMessage RequestPassthrough(string jobName, string path)
         {
-            return ForwardJobRequestToContainer($"/{jobName}/passthrough/{path}");
-        }
-
-        private HttpResponseMessage ListJobsResponseBasedOnETag(IEnumerable<JobBase> jobs)
-        {
-            string etag = GetRequestETag();
-
-            string currentETag = "\"" + HashHelpers.CalculateCompositeHash(jobs.ToArray()).ToString("x") + "\"";
-
-            HttpResponseMessage response;
-            if (etag == currentETag)
-            {
-                response = Request.CreateResponse(HttpStatusCode.NotModified);
-            }
-            else
-            {
-                response = Request.CreateResponse(HttpStatusCode.OK, ArmUtils.AddEnvelopeOnArmRequest(jobs, Request));
-            }
-
-            response.Headers.ETag = new EntityTagHeaderValue(currentETag);
-
-            return response;
-        }
-
-        private string GetRequestETag()
-        {
-            return Request.Headers.IfNoneMatch.Select(header => header.Tag).FirstOrDefault();
-        }
-
-        private HttpResponseMessage RemoveJob<TJob>(string jobName, IJobsManager<TJob> jobsManager) where TJob : JobBase, new()
-        {
-            jobsManager.DeleteJob(jobName);
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        private async Task<HttpResponseMessage> CreateJob<TJob>(string jobName, IJobsManager<TJob> jobsManager) where TJob : JobBase, new()
-        {
-            TJob job = null;
-            string errorMessage = null;
-            HttpStatusCode errorStatusCode;
-
-            // Get the script file name from the content disposition header
-            string scriptFileName = null;
-            HttpContent content = Request.Content;
-            if (content.Headers != null && content.Headers.ContentDisposition != null)
-            {
-                scriptFileName = content.Headers.ContentDisposition.FileName;
-            }
-
-            if (String.IsNullOrEmpty(scriptFileName))
-            {
-                return CreateErrorResponse(HttpStatusCode.BadRequest, Resources.Error_MissingContentDispositionHeader);
-            }
-
-            // Clean the file name from quotes and directories
-            scriptFileName = scriptFileName.Trim('"');
-            scriptFileName = Path.GetFileName(scriptFileName);
-
-            Stream fileStream = await content.ReadAsStreamAsync();
-
-            try
-            {
-                // Upload as a zip if content type is of a zipped file
-                if (content.Headers.ContentType != null &&
-                    String.Equals(content.Headers.ContentType.MediaType, "application/zip", StringComparison.OrdinalIgnoreCase))
-                {
-                    job = jobsManager.CreateOrReplaceJobFromZipStream(fileStream, jobName);
-                }
-                else
-                {
-                    job = jobsManager.CreateOrReplaceJobFromFileStream(fileStream, jobName, scriptFileName);
-                }
-
-                errorMessage = job.Error;
-                errorStatusCode = HttpStatusCode.BadRequest;
-            }
-            catch (ConflictException)
-            {
-                return CreateErrorResponse(HttpStatusCode.Conflict, Resources.Error_WebJobAlreadyExists);
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                errorStatusCode = HttpStatusCode.InternalServerError;
-                _tracer.TraceError(ex);
-            }
-
-            // On error, delete job (if exists)
-            if (errorMessage != null)
-            {
-                jobsManager.DeleteJob(jobName);
-                return CreateErrorResponse(errorStatusCode, errorMessage);
-            }
-
-            return Request.CreateResponse(job);
-        }
-
-        private HttpResponseMessage GetJobSettings<TJob>(string jobName, IJobsManager<TJob> jobsManager) where TJob : JobBase, new()
-        {
-            try
-            {
-                JobSettings jobSettings = jobsManager.GetJobSettings(jobName);
-                return Request.CreateResponse(HttpStatusCode.OK, jobSettings);
-            }
-            catch (JobNotFoundException)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-        }
-
-        private HttpResponseMessage SetJobSettings<TJob>(string jobName, JobSettings jobSettings, IJobsManager<TJob> jobsManager) where TJob : JobBase, new()
-        {
-            try
-            {
-
-                jobsManager.SetJobSettings(jobName, jobSettings);
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-            catch (JobNotFoundException)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-        }
-
-        private HttpResponseMessage CreateErrorResponse(HttpStatusCode errorStatusCode, string errorMessage)
-        {
-            HttpResponseMessage response = Request.CreateResponse(errorStatusCode);
-            response.Content = new StringContent(errorMessage);
-            return response;
+            return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}/passthrough/{path}");
         }
 
         private HttpResponseMessage ForwardJobRequestToContainer(string route)

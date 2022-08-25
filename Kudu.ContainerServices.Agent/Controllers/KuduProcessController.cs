@@ -22,7 +22,7 @@ namespace Kudu.ContainerServices.Agent.Controllers
         public IActionResult GetAllProcesses()
         {
             IEnumerable<ProcessInfo> processes = Process.GetProcesses()
-                .Where(p => !AppServicePlatformProcess(p))
+                .Where(p => !AppServicePlatformProcess(p))  // Hide processes started by App Service
                 .Select(p => GetProcessInfo(p, details: false, $"{p.Id}"));
 
             return Ok(processes);
