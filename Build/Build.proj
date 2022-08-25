@@ -74,11 +74,11 @@
 
 	<Target Name="BuildContainerExtension">
 		<MSBuild Projects="$(ContainerExtensionProject)"
-                 Properties="SelfContained=true;
-                             RuntimeIdentifier=win10-x64"/>
+                 Properties="TargetFramework=net6.0;RuntimeFrameworkVersion=6.0.0;SelfContained=false;
+                             UseAppHost=false;RuntimeIdentifier=win10-x64"/>
 
 		<ItemGroup>
-			<ContainerExtensionFilesToCopy Include="$(ProjectRoot)\Kudu.ContainerServices.Agent\bin*\*"/>
+			<ContainerExtensionFilesToCopy Include="$(ProjectRoot)\Kudu.ContainerServices.Agent\bin\*"/>
 		</ItemGroup>
 
 		<Copy SourceFiles="%(ContainerExtensionFilesToCopy.FullPath)" DestinationFiles="$(ContainerExtensionTargetPath)\%(RecursiveDir)%(Filename)%(Extension)"

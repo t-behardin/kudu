@@ -42,6 +42,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kudu.Contracts", "Kudu.Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kudu.ContainerServices.Agent", "Kudu.ContainerServices.Agent\Kudu.ContainerServices.Agent.csproj", "{49DBD879-FC65-4806-8BB4-A836247361E4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kudu.ContainerServices.Core", "Kudu.ContainerServices.Core\Kudu.ContainerServices.Core.csproj", "{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -222,6 +224,18 @@ Global
 		{49DBD879-FC65-4806-8BB4-A836247361E4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{49DBD879-FC65-4806-8BB4-A836247361E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{49DBD879-FC65-4806-8BB4-A836247361E4}.Release|x86.Build.0 = Release|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Debug|x86.Build.0 = Debug|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Release|x86.ActiveCfg = Release|Any CPU
+		{24339776-A1AF-40A6-8FE9-B6BBCA2CFF9B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

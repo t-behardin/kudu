@@ -13,6 +13,7 @@ using Microsoft.Win32.SafeHandles;
 using Microsoft.AspNetCore.Authentication;
 using System.Runtime.Versioning;
 using Kudu.ContainerServices.Agent.Util;
+using Microsoft.Extensions.Primitives;
 
 namespace Kudu.ContainerServices.Agent.Security
 {   
@@ -32,6 +33,18 @@ namespace Kudu.ContainerServices.Agent.Security
 
         public async Task Invoke(HttpContext context)
         {
+            StringValues hostname;
+            if (context.Request.Headers.TryGetValue("WAS-DEFAULT-HOSTNAME", out hostname)) {
+                // Scm site name needed for some webjob operations
+                System.Environment.SetEnvironmentVariable("HTTP_HOST", hostname);
+                await _requestDelegate(context);
+            } else
+            {
+                throw new MissingFieldException("Header field WAS-DEFAULT-HOSTNAME is missing.");
+            }
+
+            
+            /*
             if (!OSDetector.IsOnWindows())
             {
                 // PrincipalContext method for validating credentials only works on Windows
@@ -68,6 +81,7 @@ namespace Kudu.ContainerServices.Agent.Security
                 context.Response.StatusCode = 401; //UnAuthorized
                 await context.Response.WriteAsync("Username or password is incorrect.");
             }
+            */
         }
     }
 }

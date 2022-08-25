@@ -4,6 +4,7 @@ using NuGet;
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -34,8 +35,19 @@ namespace Kudu.Services.Diagnostics
 
                 string containerUrl = $"http://{containerAddress}:{kuduContainerAgentPort}" + route;
 
-                // Request the kudu agent in the container to return list of processes
+                // Create the client to forward the request to the container
                 System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
+                
+                foreach (var header in request.Headers.ToList())
+                {
+                    // Ignore the host since we want it to be updated to be the container address
+                    if (header.Key != "Host")
+                    {
+                        client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    }
+                }
+
+                // Add authorization to the client request
                 string authHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{kudu_agent_un}:{kudu_agent_pwd}"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("BASIC", authHeader);
 
