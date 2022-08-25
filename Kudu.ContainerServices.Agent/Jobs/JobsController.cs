@@ -127,7 +127,7 @@ namespace Kudu.ContainerServices.Agent.Jobs
         [HttpPut("continuouswebjobs/{jobName}/settings")]
         public IActionResult SetContinuousJobSettings(string jobName, JobSettings jobSettings)
         {
-            throw new NotImplementedException();
+            return SetJobSettings(jobName, jobSettings, _continuousJobsManager);
         }
 
         [HttpGet("triggeredwebjobs")]
