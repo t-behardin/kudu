@@ -76,6 +76,8 @@ namespace Kudu.Services.Jobs
         [HttpPut]
         public HttpResponseMessage SetContinuousJobSettings(string jobName, JobSettings jobSettings)
         {
+            // Re-add the settings to the request
+            Request.Content = new StringContent(JsonSerializer.Serialize(jobSettings), Encoding.UTF8, "application/json");
             return ForwardJobRequestToContainer($"continuouswebjobs/{jobName}/settings");
         }
 
