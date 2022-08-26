@@ -91,10 +91,7 @@ namespace Kudu.Services.Jobs
         [HttpGet]
         public HttpResponseMessage ListTriggeredJobsInSwaggerFormat()
         {
-            IEnumerable<TriggeredJob> triggeredJobs = _triggeredJobsManager.ListJobs(forceRefreshCache: false);
-
-            SwaggerApiDef responseSwagger = new SwaggerApiDef(triggeredJobs);
-            return Request.CreateResponse(responseSwagger);
+            return ForwardJobRequestToContainer("triggeredwebjobsswagger/");
         }
 
         [HttpGet]

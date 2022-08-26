@@ -143,7 +143,7 @@ namespace Kudu.ContainerServices.Agent.Jobs
             return ListJobsResponseBasedOnETag(triggeredJobs);
         }
 
-        [HttpGet("triggeredjobsinswaggerformat")]
+        [HttpGet("triggeredwebjobsswagger")]
         public IActionResult ListTriggeredJobsInSwaggerFormat()
         {
             IEnumerable<TriggeredJob> triggeredJobs = _triggeredJobsManager.ListJobs(forceRefreshCache: false);
