@@ -12,7 +12,7 @@
         <ArtifactsPath>$(ProjectRoot)\artifacts\$(Configuration)</ArtifactsPath>
         <ServiceSiteTargetPath Condition="$(ServiceSiteTargetPath) == ''">$(ArtifactsPath)\SiteExtensions\Kudu</ServiceSiteTargetPath>
         <ServiceSiteProject>$(ProjectRoot)\Kudu.Services.Web\Kudu.Services.Web.csproj</ServiceSiteProject>
-        <ContainerExtensionTargetPath Condition="$(ContainerExtensionTargetPath) == ''">$(ServiceSiteTargetPath)\ContainerServices</ContainerExtensionTargetPath>
+        <ContainerExtensionTargetPath Condition="$(ContainerExtensionTargetPath) == ''">$(ServiceSiteTargetPath)\KuduAgent</ContainerExtensionTargetPath>
 		<ContainerExtensionProject>$(ProjectRoot)\Kudu.ContainerServices.Agent\Kudu.ContainerServices.Agent.csproj</ContainerExtensionProject>
         <ClientSiteTargetPath Condition="$(ClientSiteTargetPath) == ''">$(ArtifactsPath)\KuduWeb</ClientSiteTargetPath>
         <ClientSiteProject>$(ProjectRoot)\Kudu.Web\Kudu.Web.csproj</ClientSiteProject>
