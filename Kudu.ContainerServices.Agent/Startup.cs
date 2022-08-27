@@ -13,7 +13,6 @@ namespace Kudu.ContainerServices.Agent
     {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             // Use basic authentication to validate user requests
             app.UseMiddleware<BasicAuthHelper>();
 

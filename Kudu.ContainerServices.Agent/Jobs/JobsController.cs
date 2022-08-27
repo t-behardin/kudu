@@ -133,7 +133,6 @@ namespace Kudu.ContainerServices.Agent.Jobs
         [HttpGet("triggeredwebjobs")]
         public IActionResult ListTriggeredJobs()
         {
-
             if (_triggeredJobsManager == null)
             {
                 return NotFound();

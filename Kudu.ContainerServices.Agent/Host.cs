@@ -41,7 +41,7 @@ namespace Kudu.ContainerServices.Agent
             string root = System.Environment.ExpandEnvironmentVariables(@"%HOME%");
             string siteRoot = Path.Combine(root, Constants.SiteFolder);
             string repositoryPath = Path.Combine(siteRoot, Constants.RepositoryPath);
-            string binPath = "C:\\bin"; // Todo: is this ok?
+            string binPath = AppDomain.CurrentDomain.BaseDirectory;
             string requestId = null;
             
             IEnvironment environment = new Core.Environment(root, EnvironmentHelper.NormalizeBinPath(binPath), repositoryPath, requestId);
