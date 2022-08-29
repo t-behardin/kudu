@@ -40,8 +40,6 @@ namespace Kudu.ContainerServices.Agent.Util
             // In Azure ARM requests, the referrer is the current id
             Uri referrer = new Uri(request.Headers.Referer);
 
-            // TODO: Verify that this upgrade works
-            //armEntry.Id = referrer != null ? referrer.AbsolutePath : request.RequestUri.AbsolutePath;
             armEntry.Id = referrer != null ? referrer.AbsolutePath : request.GetDisplayUrl();
 
             // If we're generating a child object, append the child name
