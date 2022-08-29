@@ -357,16 +357,16 @@ namespace Kudu.ContainerServices.Agent.Jobs
 
             if (Request.Headers != null && !Request.Headers.ContentDisposition.IsNullOrEmpty())
             {
-                //scriptFileName = Request.Headers.ContentDisposition.FileName;
-                
-                // TODO: Revisit the reliability of this
-                // What is it grabbing here? Is it grabbing 'filename=test.txt' or just 'filename=' or just 'test.txt'
                 string[] filenameObject = Request.Headers.ContentDisposition.ToString().Split(";");
                 
                 // Find the part that contains 'filename=*'
-
-                // TODO: What happens if it can't find filename?
                 scriptFileName = Array.Find(filenameObject, e => e.Contains("filename="));
+
+                if (scriptFileName == null)
+                {
+                    return BadRequest("Content-Disposition header must contain the filename");
+                }
+
                 // Drop the 'filename=' and any spaces that may come before it
                 scriptFileName = scriptFileName.Substring(scriptFileName.IndexOf("filename=") + 9);
             }
