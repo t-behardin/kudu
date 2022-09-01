@@ -11,6 +11,8 @@ using Kudu.Core.Diagnostics;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
 using Kudu.Contracts.Tracing;
+using System.Security.Cryptography;
+using System.Threading;
 
 namespace Kudu.ContainerServices.Agent.Controllers
 {
@@ -180,8 +182,8 @@ namespace Kudu.ContainerServices.Agent.Controllers
         }
 
         private static ProcessInfo GetProcessInfo(Process process, bool details = false, string path = "")
-        {            
-            var href = $"https://{Environment.GetEnvironmentVariable("HTTP_HOST")}/api/processes/{path}";
+        {
+            var href = $"https://{Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME")}/api/processes/{path}";
             if (href.EndsWith("/0", StringComparison.OrdinalIgnoreCase))
             {
                 href = href.Substring(0, href.Length - 1) + process.Id;
