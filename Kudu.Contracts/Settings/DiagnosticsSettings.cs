@@ -123,7 +123,6 @@ namespace Kudu.Contracts.Settings
         {
             return _settings.Union(_extraSettings).GetEnumerator();
         }
-
         private class StrictStringEnumConverter : JsonConverter<TraceEventType>
         {
 
@@ -149,7 +148,6 @@ namespace Kudu.Contracts.Settings
             {
                 if (Enum.IsDefined(objectType.GetType(), objectType))
                 {
-                    var testString = objectType.ToString();
                     writer.WriteStringValue(objectType.ToString());
                     return;
                 }

@@ -43,7 +43,7 @@ namespace Kudu.ContainerServices.Agent.Security
                 throw new MissingFieldException("Header field WAS-DEFAULT-HOSTNAME is missing.");
             }
 
-            
+
             /*
             if (!OSDetector.IsOnWindows())
             {
