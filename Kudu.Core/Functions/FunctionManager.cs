@@ -286,7 +286,6 @@ namespace Kudu.Core.Functions
 
         private async Task<FunctionEnvelope> CreateFunctionConfig(string configContent, string functionName, FunctionTestData packageLimit)
         {
-            //var functionConfig = JsonObject.Parse(configContent);
             var functionConfig = JsonObject.Parse(configContent);
             var functionPath = GetFuncPathAndCheckExistence(functionName);
             string functionPrimaryScriptFile = DeterminePrimaryScriptFile((string)functionConfig["scriptFile"], functionPath);

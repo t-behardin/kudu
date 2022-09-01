@@ -87,12 +87,12 @@ namespace Kudu.Contracts.SiteExtensions
 
         public SiteExtensionInfo(UIPackageMetadata data)
         {
-            //Id = data.Identity.Id;
+            Id = data.Identity.Id;
             Title = data.Title;
             Type = SiteExtensionType.Gallery;
             Summary = data.Summary;
             Description = data.Description;
-            //Version = data.Identity.Version.ToNormalizedString();
+            Version = data.Identity.Version.ToNormalizedString();
             ProjectUrl = data.ProjectUrl == null ? null : data.ProjectUrl.ToString();
             IconUrl = data.IconUrl == null ? "https://www.nuget.org/Content/Images/packageDefaultIcon-50x50.png" : data.IconUrl.ToString();
             LicenseUrl = data.LicenseUrl == null ? null : data.LicenseUrl.ToString();

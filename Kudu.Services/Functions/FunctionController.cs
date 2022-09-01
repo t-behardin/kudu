@@ -179,7 +179,6 @@ namespace Kudu.Services.Functions
             var tracer = _traceFactory.GetTracer();
             using (tracer.Step("FunctionsController.PutHostSettings()"))
             {
-                //return Request.CreateResponse(HttpStatusCode.Created, await _manager.PutHostConfigAsync(await Request.Content.ReadAsAsync<JsonObject>()));
                 return Request.CreateResponse(HttpStatusCode.Created, await _manager.PutHostConfigAsync(await Request.Content.ReadAsAsync<JsonObject>()));
             }
         }

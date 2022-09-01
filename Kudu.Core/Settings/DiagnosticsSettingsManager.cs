@@ -5,7 +5,6 @@ using Kudu.Contracts.Settings;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
-//using Newtonsoft.Json;
 using System.Text.Json;
 using System.Diagnostics;
 

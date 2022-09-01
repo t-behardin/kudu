@@ -7,7 +7,6 @@ using System.Text.Json.Serialization;
 
 namespace Kudu.Core.Diagnostics
 {
-    //[JsonObject()]
     public class ProcessModuleInfo : INamedObject
     {
         [JsonIgnore]

@@ -57,7 +57,7 @@ namespace Kudu.Core.SourceControl
 
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3}", Id, Timestamp, AuthorName, Message);
+            return String.Format("{0} {1} {2} {3}", Id, Timestamp, AuthorName, Message);
         }
     }
 }
