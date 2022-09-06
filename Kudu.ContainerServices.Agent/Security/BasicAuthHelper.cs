@@ -32,23 +32,21 @@ namespace Kudu.ContainerServices.Agent.Security
         }
 
         public async Task Invoke(HttpContext context)
-        {
-            StringValues hostname;
-            if (context.Request.Headers.TryGetValue("WAS-DEFAULT-HOSTNAME", out hostname)) {
-                // Scm site name needed for some webjob operations
-                System.Environment.SetEnvironmentVariable("HTTP_HOST", hostname);
-                await _requestDelegate(context);
-            } else
-            {
-                throw new MissingFieldException("Header field WAS-DEFAULT-HOSTNAME is missing.");
-            }
-
-            
-            /*
+        {         
             if (!OSDetector.IsOnWindows())
             {
                 // PrincipalContext method for validating credentials only works on Windows
                 throw new NotImplementedException();
+            }
+
+            StringValues hostname;
+            if (context.Request.Headers.TryGetValue("WAS-DEFAULT-HOSTNAME", out hostname)) {
+                // Scm site name needed for some webjob operations
+                System.Environment.SetEnvironmentVariable("HTTP_HOST", hostname);
+            }
+            else
+            {
+                throw new MissingFieldException("Header field WAS-DEFAULT-HOSTNAME is missing.");
             }
 
             var authHeader = AuthenticationHeaderValue.Parse(context.Request.Headers["Authorization"]);
@@ -81,7 +79,6 @@ namespace Kudu.ContainerServices.Agent.Security
                 context.Response.StatusCode = 401; //UnAuthorized
                 await context.Response.WriteAsync("Username or password is incorrect.");
             }
-            */
         }
     }
 }

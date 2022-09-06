@@ -44,6 +44,8 @@ using Kudu.Services.Web.Services;
 using Kudu.Services.Web.Tracing;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Ninject;
 using Ninject.Web.Common;
 using Owin;
@@ -432,6 +434,10 @@ namespace Kudu.Services.Web.App_Start
             GlobalConfiguration.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
             var jsonFormatter = new JsonMediaTypeFormatter();
+            jsonFormatter.SerializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
+            };
             GlobalConfiguration.Configuration.Formatters.Add(jsonFormatter);
             GlobalConfiguration.Configuration.DependencyResolver = new NinjectWebApiDependencyResolver(kernel);
             GlobalConfiguration.Configuration.Filters.Add(new TraceExceptionFilterAttribute());

@@ -12,6 +12,13 @@
 	<EnableNETAnalyzers>False</EnableNETAnalyzers>
 	<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
   </PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Properties\PublishProfiles\**" />
+	  <Content Remove="Properties\PublishProfiles\**" />
+	  <EmbeddedResource Remove="Properties\PublishProfiles\**" />
+	  <None Remove="Properties\PublishProfiles\**" />
+	  <_WebToolingArtifacts Remove="Properties\PublishProfiles\**" />
+	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />

@@ -183,7 +183,7 @@ namespace Kudu.ContainerServices.Agent.Controllers
 
         private static ProcessInfo GetProcessInfo(Process process, bool details = false, string path = "")
         {
-            var href = $"https://{Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME")}/api/processes/{path}";
+            var href = $"https://{Environment.GetEnvironmentVariable("HTTP_HOST")}/api/processes/{path}";
             if (href.EndsWith("/0", StringComparison.OrdinalIgnoreCase))
             {
                 href = href.Substring(0, href.Length - 1) + process.Id;
@@ -224,7 +224,7 @@ namespace Kudu.ContainerServices.Agent.Controllers
                 info.TimeStamp = DateTime.UtcNow;
                 info.EnvironmentVariables = SafeGetValue(process.GetEnvironmentVariables, new Dictionary<string, string>());
                 info.CommandLine = SafeGetValue(process.GetCommandLine, null);
-                // Not supported for Xenon yet!
+                // Not supported for Kudu Agent yet!
                 info.OpenFileHandles = Enumerable.Empty<string>(); // SafeGetValue(() => GetOpenFileHandles(process.Id), Enumerable.Empty<string>());
                 info.IsProfileRunning = false;          // ProfileManager.IsProfileRunning(process.Id);
                 info.IsIisProfileRunning = false;       // ProfileManager.IsIisProfileRunning(process.Id);
@@ -334,22 +334,6 @@ namespace Kudu.ContainerServices.Agent.Controllers
             {
                 return defaultValue;
             }
-        }
-
-        private bool isAuthenticated(HttpRequest request)
-        {
-            
-            /*HttpContext.AuthenticateAsync() 
-            string username = null;
-            if (request.Headers.Authorization !
-                
-                &&
-                String.Equals(request.Headers.Authorization.Scheme, HttpBasicSchemeName, StringComparison.OrdinalIgnoreCase))
-            {
-                return TryParseBasicAuthUserFromHeaderParameter(request.Headers.Authorization.Parameter, out username);
-            }*/
-
-            return false;
         }
     }
 
