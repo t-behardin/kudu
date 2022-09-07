@@ -24,13 +24,13 @@ using System.Text;
 
 namespace Kudu.Services.Diagnostics
 {
-    public class XenonProcessController : ApiController
+    public class AgentProcessController : ApiController
     {
         private readonly ITracer _tracer;
         private readonly IEnvironment _environment;
         private readonly IDeploymentSettingsManager _settings;
 
-        public XenonProcessController(ITracer tracer,
+        public AgentProcessController(ITracer tracer,
                                  IEnvironment environment,
                                  IDeploymentSettingsManager settings)
         {
@@ -42,7 +42,7 @@ namespace Kudu.Services.Diagnostics
         [HttpGet]
         public HttpResponseMessage GetThread(int processId, int threadId)
         {
-            using (_tracer.Step("XenonProcessController.GetThread"))
+            using (_tracer.Step("AgentProcessController.GetThread"))
             {
                 return ForwardProcessRequestToContainer($"{processId}/threads/{threadId}");
             }
@@ -51,7 +51,7 @@ namespace Kudu.Services.Diagnostics
         [HttpGet]
         public HttpResponseMessage GetAllThreads(int id)
         {
-            using (_tracer.Step("XenonProcessController.GetAllThreads"))
+            using (_tracer.Step("AgentProcessController.GetAllThreads"))
             {
                 return ForwardProcessRequestToContainer($"{id}/threads");
             }
@@ -60,7 +60,7 @@ namespace Kudu.Services.Diagnostics
         [HttpGet]
         public HttpResponseMessage GetModule(int id, string baseAddress)
         {
-            using (_tracer.Step("XenonProcessController.GetModule"))
+            using (_tracer.Step("AgentProcessController.GetModule"))
             {
                 return ForwardProcessRequestToContainer($"{id}/modules/{baseAddress}");
             }
@@ -69,7 +69,7 @@ namespace Kudu.Services.Diagnostics
         [HttpGet]
         public HttpResponseMessage GetAllModules(int id)
         {
-            using (_tracer.Step("XenonProcessController.GetAllModules"))
+            using (_tracer.Step("AgentProcessController.GetAllModules"))
             {
                 return ForwardProcessRequestToContainer($"{id}/modules");
             }
@@ -78,7 +78,7 @@ namespace Kudu.Services.Diagnostics
         [HttpGet]
         public HttpResponseMessage GetEnvironments(int id, string filter)
         {
-            using (_tracer.Step("XenonProcessController.GetEnvironments"))
+            using (_tracer.Step("AgentProcessController.GetEnvironments"))
             {
                 return ForwardProcessRequestToContainer($"{id}/environments/{filter}");
             }
@@ -88,7 +88,7 @@ namespace Kudu.Services.Diagnostics
         public HttpResponseMessage GetAllProcesses(bool allUsers = false)
         {
             var requestUri = Request.GetRequestUri(_settings.GetUseOriginalHostForReference()).GetLeftPart(UriPartial.Path).TrimEnd('/');
-            using (_tracer.Step("XenonProcessController.GetAllProcesses"))
+            using (_tracer.Step("AgentProcessController.GetAllProcesses"))
             {
                 return ForwardProcessRequestToContainer($"");
             }
@@ -97,7 +97,7 @@ namespace Kudu.Services.Diagnostics
         [HttpGet]
         public HttpResponseMessage GetProcess(int id)
         {
-            using (_tracer.Step("XenonProcessController.GetProcess"))
+            using (_tracer.Step("AgentProcessController.GetProcess"))
             {
                 return ForwardProcessRequestToContainer($"{id}");
             }
@@ -106,7 +106,7 @@ namespace Kudu.Services.Diagnostics
         [HttpDelete, HttpPost]
         public HttpResponseMessage KillProcess(int id)
         {
-            using (_tracer.Step("XenonProcessController.KillProcess"))
+            using (_tracer.Step("AgentProcessController.KillProcess"))
             {
                 return ForwardProcessRequestToContainer($"{id}");
             }
@@ -115,7 +115,7 @@ namespace Kudu.Services.Diagnostics
         [HttpGet]
         public HttpResponseMessage MiniDump(int id, int dumpType = 0, string format = null)
         {
-            using (_tracer.Step("XenonProcessController.MiniDump"))
+            using (_tracer.Step("AgentProcessController.MiniDump"))
             {
                 return ForwardProcessRequestToContainer($"{id}/dump");
             }
@@ -124,7 +124,7 @@ namespace Kudu.Services.Diagnostics
         [HttpPost]
         public HttpResponseMessage StartProfileAsync(int id, bool iisProfiling = false)
         {
-            using (_tracer.Step("XenonProcessController.StartProfileAsync"))
+            using (_tracer.Step("AgentProcessController.StartProfileAsync"))
             {
                 return ForwardProcessRequestToContainer($"{id}/profile/start");
             }
@@ -133,7 +133,7 @@ namespace Kudu.Services.Diagnostics
         [HttpGet]
         public HttpResponseMessage StopProfileAsync(int id)
         {
-            using (_tracer.Step("XenonProcessController.StopProfileAsync"))
+            using (_tracer.Step("AgentProcessController.StopProfileAsync"))
             {
                 return ForwardProcessRequestToContainer($"{id}/profile/stop");
             }
@@ -141,7 +141,7 @@ namespace Kudu.Services.Diagnostics
 
         public HttpResponseMessage ForwardProcessRequestToContainer(string route)
         {
-            using (_tracer.Step("XenonProcessController.ForwardToContainer"))
+            using (_tracer.Step("AgentProcessController.ForwardToContainer"))
             {
                 return HttpRequestExtensions.ForwardToContainer($"/processes/{route}", Request);
             }

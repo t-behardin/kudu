@@ -542,8 +542,8 @@ namespace Kudu.Services.Web.App_Start
             var jobsControllerName = "Jobs";
             if (EnvironmentHelper.IsWindowsContainers())
             {
-                processControllerName = "XenonProcess";
-                jobsControllerName = "XenonJobs";
+                processControllerName = "AgentProcess";
+                jobsControllerName = "AgentJobs";
             }
             else
             {

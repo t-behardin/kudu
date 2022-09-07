@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 namespace Kudu.ContainerServices.Agent.Util
 {
     // Copy of ArmUtils needed for the agent
-    public class XenonArmUtils
+    public class AgentArmUtils
     {
 
         public const string GeoLocationHeaderKey = "x-ms-geo-location";

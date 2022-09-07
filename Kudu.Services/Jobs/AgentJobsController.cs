@@ -23,13 +23,13 @@ using System.Web.Http.Controllers;
 namespace Kudu.Services.Jobs
 {
     [ArmControllerConfiguration]
-    public class XenonJobsController : ApiController
+    public class AgentJobsController : ApiController
     {
         private readonly ITracer _tracer;
         private readonly ITriggeredJobsManager _triggeredJobsManager;
         private readonly IContinuousJobsManager _continuousJobsManager;
 
-        public XenonJobsController(ITriggeredJobsManager triggeredJobsManager, IContinuousJobsManager continuousJobsManager, ITracer tracer)
+        public AgentJobsController(ITriggeredJobsManager triggeredJobsManager, IContinuousJobsManager continuousJobsManager, ITracer tracer)
         {
             _triggeredJobsManager = triggeredJobsManager;
             _continuousJobsManager = continuousJobsManager;
@@ -183,7 +183,7 @@ namespace Kudu.Services.Jobs
 
         private HttpResponseMessage ForwardJobRequestToContainer(string route)
         {
-            using (_tracer.Step("XenonJobsController.ForwardToContainer"))
+            using (_tracer.Step("AgentJobsController.ForwardToContainer"))
             {
                 return Diagnostics.HttpRequestExtensions.ForwardToContainer($"/webjobs/{route}", Request);
             }

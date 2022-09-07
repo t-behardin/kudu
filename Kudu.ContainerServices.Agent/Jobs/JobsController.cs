@@ -75,7 +75,7 @@ namespace Kudu.ContainerServices.Agent.Jobs
             ContinuousJob continuousJob = _continuousJobsManager.GetJob(jobName);
             if (continuousJob != null)
             {
-                return Ok(XenonArmUtils.AddEnvelopeOnArmRequest(continuousJob, Request));
+                return Ok(AgentArmUtils.AddEnvelopeOnArmRequest(continuousJob, Request));
                
             }
 
@@ -157,7 +157,7 @@ namespace Kudu.ContainerServices.Agent.Jobs
             TriggeredJob triggeredJob = _triggeredJobsManager.GetJob(jobName);
             if (triggeredJob != null)
             {
-                return Ok(XenonArmUtils.AddEnvelopeOnArmRequest(triggeredJob, Request));
+                return Ok(AgentArmUtils.AddEnvelopeOnArmRequest(triggeredJob, Request));
             }
 
             return NotFound($"Could not find the triggered job with the name \'{jobName}\'.");
@@ -184,7 +184,7 @@ namespace Kudu.ContainerServices.Agent.Jobs
             else
             {
                 object triggeredJobHistoryResponse =
-                    history != null && XenonArmUtils.IsArmRequest(Request) ? XenonArmUtils.AddEnvelopeOnArmRequest(history.TriggeredJobRuns, Request) : history;
+                    history != null && AgentArmUtils.IsArmRequest(Request) ? AgentArmUtils.AddEnvelopeOnArmRequest(history.TriggeredJobRuns, Request) : history;
                 
                 Response.Headers.ETag = new EntityTagHeaderValue(currentETag).ToString();
                 return Ok(triggeredJobHistoryResponse);
@@ -197,7 +197,7 @@ namespace Kudu.ContainerServices.Agent.Jobs
             TriggeredJobRun triggeredJobRun = _triggeredJobsManager.GetJobRun(jobName, runId);
             if (triggeredJobRun != null)
             {
-                return Ok(XenonArmUtils.AddEnvelopeOnArmRequest(triggeredJobRun, Request));
+                return Ok(AgentArmUtils.AddEnvelopeOnArmRequest(triggeredJobRun, Request));
             }
 
             return NotFound();
@@ -215,7 +215,7 @@ namespace Kudu.ContainerServices.Agent.Jobs
                 
                 // Return a 200 in the ARM case, otherwise a 202 can cause it to poll on /run, which we don't support
                 // For non-ARM, stay with the 202 to reduce potential impact of change
-                return XenonArmUtils.IsArmRequest(Request) ? Ok() : Accepted();
+                return AgentArmUtils.IsArmRequest(Request) ? Ok() : Accepted();
             }
             catch (JobNotFoundException)
             {
