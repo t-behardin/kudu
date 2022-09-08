@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using Kudu.Core.Deployment;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using Kudu.Core.SourceControl;
+using System.Collections.Generic;
 
 namespace Kudu.Core.Infrastructure
 {

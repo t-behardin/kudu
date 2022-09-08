@@ -1,5 +1,4 @@
-﻿using Kudu.Contracts.Deployment;
-using Kudu.Core.Deployment;
+﻿using Kudu.Core.Deployment;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 using Moq;

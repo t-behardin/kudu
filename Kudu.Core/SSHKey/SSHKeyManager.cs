@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using Kudu.Contracts;
 using Kudu.Contracts.Settings;
-using Kudu.Core.SSHKey;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Deployment;
 using Kudu.Core.Helpers;

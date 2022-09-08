@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Xml.Linq;
-using Kudu.Contracts.Deployment;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 

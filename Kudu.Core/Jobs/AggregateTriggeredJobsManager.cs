@@ -1,8 +1,7 @@
 ﻿using System;
-using Kudu.Contracts;
-using Kudu.Core.Hooks;
 using Kudu.Contracts.Jobs;
 using Kudu.Contracts.Settings;
+using Kudu.Core.Hooks;
 using Kudu.Core.Tracing;
 
 namespace Kudu.Core.Jobs

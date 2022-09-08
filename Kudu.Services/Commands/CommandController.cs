@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Kudu.Contracts.Tracing;
+using Kudu.Core;
 using Kudu.Core.Commands;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;

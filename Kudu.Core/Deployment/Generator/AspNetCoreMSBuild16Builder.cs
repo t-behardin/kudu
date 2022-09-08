@@ -1,7 +1,6 @@
 ﻿using System;
 using Kudu.Contracts.Settings;
 using System.Globalization;
-using Kudu.Contracts;
 
 namespace Kudu.Core.Deployment.Generator
 {

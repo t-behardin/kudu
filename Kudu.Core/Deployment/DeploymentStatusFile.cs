@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Linq;
-using Kudu.Contracts;
-using Kudu.Contracts.Deployment;
 using Kudu.Contracts.Infrastructure;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Settings;

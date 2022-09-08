@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using Kudu.Contracts;
 using Kudu.Contracts.Jobs;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Tracing;

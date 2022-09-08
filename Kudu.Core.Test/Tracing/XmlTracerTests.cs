@@ -7,7 +7,6 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
@@ -244,7 +243,6 @@ namespace Kudu.Core.Test.Tracing
             var mock = new Mock<HttpRequestBase>();
             mock.Setup(req => req.RawUrl).Returns(rawUrl);
             mock.Setup(req => req.UserAgent).Returns(userAgent);
-
             HttpRequestBase request = mock.Object;
             Assert.Equal(expected, TraceExtensions.ShouldSkipRequest(request));
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Kudu.Contracts.Deployment;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Deployment;
 using Kudu.Core.Tracing;

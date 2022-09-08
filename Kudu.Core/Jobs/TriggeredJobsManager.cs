@@ -6,10 +6,9 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
-using Kudu.Contracts;
-using Kudu.Core.Hooks;
 using Kudu.Contracts.Jobs;
 using Kudu.Contracts.Settings;
+using Kudu.Core.Hooks;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 

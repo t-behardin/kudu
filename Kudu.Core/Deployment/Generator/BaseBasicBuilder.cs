@@ -1,5 +1,4 @@
-﻿using Kudu.Contracts;
-using Kudu.Contracts.Settings;
+﻿using Kudu.Contracts.Settings;
 using System;
 using System.Globalization;
 

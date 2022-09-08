@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.IO.Abstractions;
-using Kudu.Contracts;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;

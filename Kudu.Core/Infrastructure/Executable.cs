@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Kudu.Contracts;
-using Kudu.Contracts.Deployment;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Deployment;
 using Kudu.Core.Tracing;

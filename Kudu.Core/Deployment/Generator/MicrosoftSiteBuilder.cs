@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using Kudu.Contracts;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Infrastructure;
 

@@ -4,16 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Kudu.Contracts;
-using Kudu.Core.Deployment;
 using Kudu.Contracts.Infrastructure;
 using Kudu.Contracts.Settings;
-using Kudu.Core.SourceControl;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Deployment.Generator;
 using Kudu.Core.Helpers;
 using Kudu.Core.Hooks;
 using Kudu.Core.Infrastructure;
+using Kudu.Core.SourceControl;
 using Kudu.Core.Tracing;
 using Newtonsoft.Json;
 

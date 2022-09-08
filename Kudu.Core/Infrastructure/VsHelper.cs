@@ -9,9 +9,9 @@ using Kudu.Contracts.Infrastructure;
 using Kudu.Contracts.Tracing;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Settings;
+using Kudu.Core.SourceControl;
 using Kudu.Core.Tracing;
 using Kudu.Core.Helpers;
-using Kudu.Core.SourceControl;
 
 namespace Kudu.Core.Infrastructure
 {

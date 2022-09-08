@@ -1,5 +1,4 @@
-﻿using Kudu.Contracts.Deployment;
-using Kudu.Contracts.Tracing;
+﻿using Kudu.Contracts.Tracing;
 
 namespace Kudu.Core.Deployment
 {

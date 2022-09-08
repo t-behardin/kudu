@@ -8,7 +8,6 @@ using Kudu.Contracts.Tracing;
 using Newtonsoft.Json;
 using Kudu.Core.Tracing;
 using System.Linq;
-using Kudu.Contracts.Deployment;
 
 namespace Kudu.Core.Deployment
 {

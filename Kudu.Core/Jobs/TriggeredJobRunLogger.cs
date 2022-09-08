@@ -9,7 +9,6 @@ using Kudu.Contracts.Tracing;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 using System.Diagnostics;
-using Kudu.Contracts;
 
 namespace Kudu.Core.Jobs
 {

@@ -5,8 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Kudu.Contracts;
-using Kudu.Contracts.Deployment;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;

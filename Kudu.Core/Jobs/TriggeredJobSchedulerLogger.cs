@@ -1,5 +1,4 @@
 using System;
-using Kudu.Contracts;
 using Kudu.Core.Tracing;
 
 namespace Kudu.Core.Jobs

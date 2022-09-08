@@ -8,7 +8,6 @@ using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 using System.Net.Sockets;
 using System.Net;
-using Kudu.Contracts;
 
 namespace Kudu.Core.Jobs
 {

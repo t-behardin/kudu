@@ -2,7 +2,6 @@
 using System.IO.Abstractions;
 using System.Security.Cryptography;
 using System.Text;
-using Kudu.Contracts;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Infrastructure;
 using Moq;
