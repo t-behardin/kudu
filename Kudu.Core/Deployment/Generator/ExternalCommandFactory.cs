@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Kudu.Core.Deployment;
 using Kudu.Contracts.Settings;
 using Kudu.Core.Helpers;
 using Kudu.Core.Infrastructure;
-using Kudu.Contracts;
 
 namespace Kudu.Core.Deployment.Generator
 {
