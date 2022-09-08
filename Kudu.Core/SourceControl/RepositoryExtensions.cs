@@ -1,5 +1,4 @@
-﻿using Kudu.Contracts.SourceControl;
-using System;
+﻿using System;
 
 namespace Kudu.Core.SourceControl
 {

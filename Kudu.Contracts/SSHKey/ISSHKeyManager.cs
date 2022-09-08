@@ -1,4 +1,5 @@
-﻿namespace Kudu.Core.SSHKey
+﻿
+namespace Kudu.Core.SSHKey
 {
     public interface ISSHKeyManager
     {

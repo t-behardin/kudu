@@ -3,13 +3,13 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Web;
 using Kudu.Contracts.Settings;
-using Kudu.Contracts.SourceControl;
 using Kudu.Contracts.Tracing;
 using Kudu.Core;
 using Kudu.Core.Deployment;
 using Kudu.Core.SourceControl;
 using Kudu.Services.FetchHelpers;
 using Newtonsoft.Json.Linq;
+using Kudu.Contracts.SourceControl;
 
 namespace Kudu.Services.ServiceHookHandlers
 {

@@ -6,7 +6,6 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Http;
-using Kudu.Contracts.Diagnostics;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.Helpers;
 using Kudu.Core.Infrastructure;

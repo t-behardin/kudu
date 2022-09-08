@@ -21,11 +21,11 @@
 #endregion
 
 using System.Web;
-using Kudu.Core.Deployment;
 using Kudu.Contracts.Infrastructure;
 using Kudu.Contracts.Settings;
-using Kudu.Core.SourceControl.Git;
 using Kudu.Contracts.Tracing;
+using Kudu.Core.Deployment;
+using Kudu.Core.SourceControl.Git;
 
 namespace Kudu.Services.GitServer
 {

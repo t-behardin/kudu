@@ -16,11 +16,9 @@ using Kudu.Services.Infrastructure;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 using Kudu.Core.Helpers;
 using Microsoft.Extensions.FileProviders.Physical;
 using System.IO.Abstractions;
-using Kudu.Contracts;
 
 namespace Kudu.Services.Performance
 {

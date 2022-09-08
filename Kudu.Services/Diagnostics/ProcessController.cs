@@ -12,13 +12,13 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using Kudu.Contracts.Settings;
 using Kudu.Contracts.Tracing;
+using Kudu.Core;
+using Kudu.Core.Diagnostics;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 using Kudu.Services.Arm;
 using Kudu.Services.Infrastructure;
 using System.Threading.Tasks;
-using Kudu.Core.Diagnostics;
-using Kudu.Core;
 
 namespace Kudu.Services.Performance
 {

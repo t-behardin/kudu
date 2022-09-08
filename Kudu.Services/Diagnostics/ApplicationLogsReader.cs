@@ -5,9 +5,9 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Kudu.Core;
 using Kudu.Contracts.Diagnostics;
 using Kudu.Contracts.Tracing;
+using Kudu.Core;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 

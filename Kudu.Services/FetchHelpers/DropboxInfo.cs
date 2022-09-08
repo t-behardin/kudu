@@ -1,7 +1,7 @@
 ﻿using System;
+using Kudu.Core.SourceControl;
 using Newtonsoft.Json.Linq;
 using Kudu.Core.Deployment;
-using Kudu.Core.SourceControl;
 using Kudu.Contracts.SourceControl;
 
 namespace Kudu.Services

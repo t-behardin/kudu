@@ -2,12 +2,12 @@
 using System.Diagnostics;
 using System.IO;
 using Kudu.Contracts;
-using Kudu.Core.Deployment;
 using Kudu.Contracts.Infrastructure;
 using Kudu.Contracts.Settings;
 using Kudu.Contracts.SourceControl;
-using Kudu.Core.SourceControl.Git;
 using Kudu.Contracts.Tracing;
+using Kudu.Core.Deployment;
+using Kudu.Core.SourceControl.Git;
 using Kudu.Core.Tracing;
 
 namespace Kudu.Core.SourceControl.Git

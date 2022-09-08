@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using System.Web;
 using Kudu.Contracts.Settings;
 using Kudu.Contracts.Tracing;
-using Newtonsoft.Json.Linq;
-using Kudu.Contracts.SourceControl;
 using Kudu.Core;
 using Kudu.Core.Deployment;
 using Kudu.Core.SourceControl;
+using Newtonsoft.Json.Linq;
+using Kudu.Contracts.SourceControl;
 
 namespace Kudu.Services.ServiceHookHandlers
 {
