@@ -269,8 +269,6 @@
     <None Include="packages.config" />
     <Content Include="ProcessExplorer\Default.cshtml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
-    <Content Include="_EventRegisterUsersGuide.docx" />
-    <Content Include="_EventSourceUsersGuide.docx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Scripts\jquery-console\README" />

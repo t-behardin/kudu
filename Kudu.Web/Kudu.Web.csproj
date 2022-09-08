@@ -293,7 +293,6 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="libman.json" />
     <None Include="Scripts\jquery-2.2.1.min.map" />
     <Content Include="Views\Shared\_GitUrlTextbox.cshtml" />
   </ItemGroup>

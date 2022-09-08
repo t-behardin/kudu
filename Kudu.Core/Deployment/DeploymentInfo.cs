@@ -1,6 +1,5 @@
-﻿using Kudu.Contracts.Deployment;
+﻿using Kudu.Core.SourceControl;
 using Kudu.Contracts.SourceControl;
-using Kudu.Core.SourceControl;
 
 namespace Kudu.Core.Deployment
 {

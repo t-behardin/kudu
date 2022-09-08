@@ -44,6 +44,7 @@
     <PackageReference Include="Mercurial.Net" Version="1.1.1.607" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.Azure.WebSites.DataProtection" Version="0.1.78-alpha" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

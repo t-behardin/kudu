@@ -2,9 +2,7 @@
 using System.Collections;
 using System.IO;
 using System.Web;
-using Kudu.Contracts;
 using Kudu.Contracts.Settings;
-using Kudu.Contracts.SourceControl;
 using Kudu.Contracts.Tracing;
 using Kudu.Core.SourceControl;
 using Kudu.Core.Tracing;
