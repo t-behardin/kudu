@@ -227,7 +227,6 @@ namespace Kudu.Core.Hooks
             if (webHook.InsecureSsl)
             {
                 webRequestHandler.ServerCertificateCustomValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-                //webRequestHandler.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
             }
 
             return new HttpClient(webRequestHandler)

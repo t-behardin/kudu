@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Core;
 using System;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using System.Security;
-using System.Security.Principal;
 using Microsoft.Win32.SafeHandles;
-using Microsoft.AspNetCore.Authentication;
-using System.Runtime.Versioning;
 using Kudu.ContainerServices.Agent.Util;
 using Microsoft.Extensions.Primitives;
 

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Kudu.Client.Deployment;
 using Kudu.Client.Infrastructure;
+using Kudu.Client.SourceControl;
 using Kudu.Core.SourceControl;
 using Kudu.Web.Models;
 using System.IO;
-using Kudu.Client.SourceControl;
 
 namespace Kudu.Web.Infrastructure
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Kudu.Contracts;
 using Kudu.Core.Commands;
 using Kudu.TestHarness;
 using Kudu.TestHarness.Xunit;

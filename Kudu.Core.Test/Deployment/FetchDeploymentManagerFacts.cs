@@ -12,9 +12,6 @@ using Kudu.Core.Deployment;
 using Kudu.Core.Infrastructure;
 using Moq;
 using Xunit;
-using Kudu.Services.ServiceHookHandlers;
-using Kudu.Contracts.Deployment;
-using Kudu.Contracts;
 using Kudu.Core.SourceControl;
 
 namespace Kudu.Core.Test

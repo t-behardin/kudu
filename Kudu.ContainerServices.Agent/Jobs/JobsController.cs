@@ -1,14 +1,5 @@
-﻿using Kudu.Core;
-using Kudu.Contracts.Jobs;
-using Kudu.Contracts.Settings;
-using Kudu.Contracts.Tracing;
-using Kudu.Core.Helpers;
-using Kudu.Core.Hooks;
+﻿using Kudu.Contracts.Jobs;
 using Kudu.Core.Infrastructure;
-using Kudu.Core.Jobs;
-using Kudu.Core.Settings;
-using Kudu.Core.Tracing;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System;
@@ -16,19 +7,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using Kudu.Contracts;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Routing;
-using System.Text.Json.Nodes;
-using Kudu.Contracts.Infrastructure;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Http.Extensions;
 using Kudu.ContainerServices.Agent.Util;
-using NuGet.Packaging.Signing;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 
 namespace Kudu.ContainerServices.Agent.Jobs

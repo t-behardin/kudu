@@ -16,7 +16,6 @@ using Kudu.Core;
 using Kudu.Core.Commands;
 using Kudu.Core.Deployment;
 using Kudu.Core.Hooks;
-using Kudu.Core.Jobs;
 using Kudu.TestHarness;
 using Kudu.TestHarness.Xunit;
 using Newtonsoft.Json;

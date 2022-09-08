@@ -10,10 +10,10 @@ using Microsoft.Extensions.Options;
 
 namespace Kudu.ContainerServices.Agent.Security
 {
-    public class DeploymentCredentialsAuthentication : AuthenticationHandler<DeploymentCredentialsAuthenticationOptions>
+    public class DeploymentCredentialsAuthentication : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         public DeploymentCredentialsAuthentication(
-            IOptionsMonitor<DeploymentCredentialsAuthenticationOptions> options,
+            IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock) :

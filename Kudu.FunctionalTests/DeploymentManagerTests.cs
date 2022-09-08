@@ -13,7 +13,6 @@ using Kudu.Client.Deployment;
 using Kudu.Client.Infrastructure;
 using Kudu.Contracts.Settings;
 using Kudu.Contracts.SourceControl;
-using Kudu.Core;
 using Kudu.Core.Commands;
 using Kudu.Core.Deployment;
 using Kudu.FunctionalTests.Infrastructure;

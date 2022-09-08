@@ -5,7 +5,6 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Text.Json.Nodes;
-using Kudu.Contracts;
 using Kudu.Core.Functions;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;

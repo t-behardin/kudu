@@ -1,11 +1,4 @@
-﻿using Kudu.Contracts;
-using Kudu.Contracts.Jobs;
-using Kudu.Contracts.Tracing;
-using Kudu.Core.Hooks;
-using Kudu.Core.Jobs;
-using Kudu.Core.Tracing;
-using Kudu.Services.Arm;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,6 +12,13 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using Kudu.Contracts;
+using Kudu.Contracts.Jobs;
+using Kudu.Contracts.Tracing;
+using Kudu.Core.Hooks;
+using Kudu.Core.Jobs;
+using Kudu.Core.Tracing;
+using Kudu.Services.Arm;
 
 namespace Kudu.Services.Jobs
 {

@@ -6,13 +6,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Kudu.ContainerServices.Agent.Util;
-using Microsoft.AspNetCore.Http;
 using Kudu.Core.Diagnostics;
-using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json.Linq;
-using Kudu.Contracts.Tracing;
-using System.Security.Cryptography;
-using System.Threading;
 
 namespace Kudu.ContainerServices.Agent.Controllers
 {
@@ -24,7 +18,7 @@ namespace Kudu.ContainerServices.Agent.Controllers
         public IActionResult GetAllProcesses()
         {
             IEnumerable<ProcessInfo> processes = Process.GetProcesses()
-                .Where(p => !AppServicePlatformProcess(p))  // Hide processes started by App Service
+                .Where(p => !AppServicePlatformProcess(p))  // Filter out platform processes
                 .Select(p => GetProcessInfo(p, details: false, $"{p.Id}"));
 
             return Ok(processes);

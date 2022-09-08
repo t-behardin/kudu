@@ -21,7 +21,7 @@ namespace Kudu.ContainerServices.Agent
             Trace.AutoFlush = true;
             Trace.WriteLine("Kudu Container Services");
 
-            // StdOut/StdErr is piped by the ContainerProcess class in DWASSVC
+            // StdOut/StdErr is piped by the ContainerProcess class
             Trace.Listeners.Add(new ConsoleTraceListener());
 
             Host.Run(args);

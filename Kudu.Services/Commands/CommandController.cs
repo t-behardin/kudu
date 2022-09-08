@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Kudu.Core.Commands;
 using Kudu.Contracts.Tracing;
+using Kudu.Core.Commands;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Tracing;
 using Newtonsoft.Json.Linq;
-using Kudu.Core;
 
 namespace Kudu.Services.Commands
 {

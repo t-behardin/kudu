@@ -211,8 +211,6 @@
     <Content Include="Content\Scripts\ace-init.js" />
     <Content Include="Content\Styles\ZipDeployTreeView.css" />
     <Content Include="favicon.ico" />
-    <Content Include="Scripts\jquery-2.2.1.js" />
-    <Content Include="Scripts\jquery-2.2.1.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -273,7 +271,6 @@
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <Content Include="_EventRegisterUsersGuide.docx" />
     <Content Include="_EventSourceUsersGuide.docx" />
-    <Content Include="Scripts\jquery-2.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Scripts\jquery-console\README" />
