@@ -39,7 +39,7 @@ using Kudu.Core.Tracing;
 using Kudu.Services.Infrastructure;
 
 namespace Kudu.Services.GitServer
-{   
+{    
     public class InfoRefsController : ApiController
     {
         private readonly ITracer _tracer;

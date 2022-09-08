@@ -33,3 +33,5 @@ Build/7zip/
 /Kudu.Web/libman.json
 /Kudu.Web/Properties/PublishProfiles
 /Kudu.Core/libman.json
+/Kudu.ContainerServices.Core/Properties/launchSettings.json
+/Kudu.ContainerServices.Agent/Properties/launchSettings.json
