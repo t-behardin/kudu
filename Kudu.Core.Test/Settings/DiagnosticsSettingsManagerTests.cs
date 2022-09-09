@@ -11,6 +11,7 @@ using Kudu.Contracts.Tracing;
 using Kudu.Core.Infrastructure;
 using Kudu.Core.Settings;
 using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Kudu.Core.Test.Settings
@@ -59,50 +60,47 @@ namespace Kudu.Core.Test.Settings
                 settings = manager.GetSettings();
                 Assert.Equal(TraceEventType.Error, settings.AzureDriveTraceLevel);
 
-                Exception exception = null;
+                JsonSerializationException exception = null;
 
                 try
                 {
                     manager.UpdateSetting(DiagnosticsSettings.AzureTableTraceLevelKey, "Error");
                 }
-                catch (Exception ex)
+                catch (JsonSerializationException ex)
                 {
                     exception = ex;
                 }
 
                 Assert.NotNull(exception);
-                //Assert.Equal("Error getting value from 'AzureTableTraceLevel' on 'Kudu.Contracts.Settings.DiagnosticsSettings'.", exception.Message);
-                Assert.Equal("Specified cast is not valid.", exception.Message);
+                Assert.Equal("Error getting value from 'AzureTableTraceLevel' on 'Kudu.Contracts.Settings.DiagnosticsSettings'.", exception.Message);
 
                 try
                 {
                     manager.UpdateSetting(DiagnosticsSettings.AzureTableTraceLevelKey, "8");
                 }
-                catch (Exception ex)
+                catch (JsonSerializationException ex)
                 {
                     exception = ex;
                 }
 
-                //Assert.Equal("Error getting value from 'AzureTableTraceLevel' on 'Kudu.Contracts.Settings.DiagnosticsSettings'.", exception.Message);
-                Assert.Equal("Specified cast is not valid.", exception.Message);
+                Assert.Equal("Error getting value from 'AzureTableTraceLevel' on 'Kudu.Contracts.Settings.DiagnosticsSettings'.", exception.Message);
 
                 try
                 {
                     manager.UpdateSetting(DiagnosticsSettings.AzureTableTraceLevelKey, "foo");
                 }
-                catch (Exception ex)
+                catch (JsonSerializationException ex)
                 {
                     exception = ex;
                 }
 
-                //Assert.Equal("Error getting value from 'AzureTableTraceLevel' on 'Kudu.Contracts.Settings.DiagnosticsSettings'.", exception.Message);
-                Assert.Equal("Specified cast is not valid.", exception.Message);
+                Assert.Equal("Error getting value from 'AzureTableTraceLevel' on 'Kudu.Contracts.Settings.DiagnosticsSettings'.", exception.Message);
 
                 try
                 {
                     manager.UpdateSetting(DiagnosticsSettings.AzureBlobTraceLevelKey, 999);
                 }
-                catch (Exception ex)
+                catch (JsonSerializationException ex)
                 {
                     exception = ex;
                 }
