@@ -455,7 +455,13 @@ namespace Kudu.Core.Jobs
             var jobDirectory = GetJobBinariesDirectory(jobName);
 
             var jobSettingsPath = GetJobSettingsPath(jobDirectory);
+            // Serialization depending on Newtonsoft.Json or System.Text.Json
+            // This is necessary because of the System.Text.Json usage of the 'ValueKind' object
+#if NET6_0_OR_GREATER
+            string jobSettingsContent = System.Text.Json.JsonSerializer.Serialize(jobSettings);
+#else
             string jobSettingsContent = JsonConvert.SerializeObject(jobSettings);
+#endif
             FileSystemHelpers.WriteAllTextToFile(jobSettingsPath, jobSettingsContent);
         }
 

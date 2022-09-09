@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -159,40 +160,43 @@ namespace Kudu.Core.SiteExtensions
                 string address = null;
                 try
                 {
-                    JObject json = null;
+                    JsonNode json = null;
                     using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }) { Timeout = HttpClientTimeout })
                     {
                         address = $"https://azuresearch-usnc.nuget.org/query?q=tags:AzureSiteExtension%20packageid:{packageId}&prerelease=true&semVerLevel=2.0.0";
                         using (var response = await client.GetAsync(address))
                         {
                             response.EnsureSuccessStatusCode();
-                            json = JObject.Parse(await response.Content.ReadAsStringAsync());
+                            json = JsonObject.Parse(await response.Content.ReadAsStringAsync());
                         }
 
-                        json = (JObject)json.Value<JArray>("data").FirstOrDefault();
+                        json = (JsonObject)json.AsArray()["data"].AsArray().FirstOrDefault(); 
                         if (json == null)
                         {
                             return null;
                         }
 
-                        json = (JObject)json.Value<JArray>("versions").FirstOrDefault(j => j.Value<string>("version") == version);
+                        // TODO: HOW TO GET A STRING VALUE.... VERSION 1
+                        json = (JsonObject)json.AsArray()["versions"].AsArray().FirstOrDefault(j => j.AsValue()["version"].ToString() == version);
                         if (json == null)
                         {
                             return null;
                         }
 
-                        address = json.Value<string>("@id");
+                        // TODO: HOW TO GET A STRING VALUE.... VERSION 2
+                        address = json["@id"].AsValue().ToString();
                         using (var response = await client.GetAsync(address))
                         {
                             response.EnsureSuccessStatusCode();
-                            json = JObject.Parse(await response.Content.ReadAsStringAsync());
+                            json = JsonObject.Parse(await response.Content.ReadAsStringAsync());
                         }
 
-                        address = json.Value<string>("catalogEntry");
+                        // TODO: HOW TO GET A STRING VALUE.... VERSION 2
+                        address = json["catalogEntry"].AsValue().ToString();
                         using (var response = await client.GetAsync(address))
                         {
                             response.EnsureSuccessStatusCode();
-                            json = JObject.Parse(await response.Content.ReadAsStringAsync());
+                            json = JsonObject.Parse(await response.Content.ReadAsStringAsync());
                         }
 
                         return new SiteExtensionInfo(json);

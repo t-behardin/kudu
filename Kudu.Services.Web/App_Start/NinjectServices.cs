@@ -434,6 +434,10 @@ namespace Kudu.Services.Web.App_Start
             GlobalConfiguration.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
             var jsonFormatter = new JsonMediaTypeFormatter();
+            jsonFormatter.SerializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
+            };
             GlobalConfiguration.Configuration.Formatters.Add(jsonFormatter);
             GlobalConfiguration.Configuration.DependencyResolver = new NinjectWebApiDependencyResolver(kernel);
             GlobalConfiguration.Configuration.Filters.Add(new TraceExceptionFilterAttribute());

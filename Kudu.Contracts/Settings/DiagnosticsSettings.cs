@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Converters;
 
 namespace Kudu.Contracts.Settings
 {
@@ -46,7 +47,7 @@ namespace Kudu.Contracts.Settings
             set { _settings[AzureDriveEnabledKey] = value; }
         }
 
-        [JsonProperty]
+        [JsonInclude]
         [JsonConverter(typeof(StrictStringEnumConverter))]
         public TraceEventType AzureDriveTraceLevel
         {
@@ -54,14 +55,14 @@ namespace Kudu.Contracts.Settings
             set { _settings[AzureDriveTraceLevelKey] = value; }
         }
 
-        [JsonProperty]
+        [JsonInclude]
         public bool AzureTableEnabled
         {
             get { return (bool)_settings[AzureTableEnabledKey]; }
             set { _settings[AzureTableEnabledKey] = value; }
         }
 
-        [JsonProperty]
+        [JsonInclude]
         [JsonConverter(typeof(StrictStringEnumConverter))]
         public TraceEventType AzureTableTraceLevel
         {
@@ -69,14 +70,14 @@ namespace Kudu.Contracts.Settings
             set { _settings[AzureTableTraceLevelKey] = value; }
         }
 
-        [JsonProperty]
+        [JsonInclude]
         public bool AzureBlobEnabled
         {
             get { return (bool)_settings[AzureBlobEnabledKey]; }
             set { _settings[AzureBlobEnabledKey] = value; }
         }
 
-        [JsonProperty]
+        [JsonInclude]
         [JsonConverter(typeof(StrictStringEnumConverter))]
         public TraceEventType AzureBlobTraceLevel
         {
@@ -137,18 +138,18 @@ namespace Kudu.Contracts.Settings
                     return base.ReadJson(reader, objectType, existingValue, serializer);
                 }
 
-                throw new JsonSerializationException(string.Format(CultureInfo.InvariantCulture, "Error converting value '{0}' from type '{1}'", reader.Value, reader.TokenType));
+                throw new JsonException(string.Format(CultureInfo.InvariantCulture, "Error converting value '{0}' from type '{1}'", reader.ValueSequence, reader.TokenType));
             }
 
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            public override void Write(Utf8JsonWriter writer, TraceEventType objectType, JsonSerializerOptions options)
             {
-                if (Enum.IsDefined(value.GetType(), value))
+                if (Enum.IsDefined(objectType.GetType(), objectType))
                 {
-                    base.WriteJson(writer, value, serializer);
+                    writer.WriteStringValue(objectType.ToString());
                     return;
                 }
 
-                throw new JsonSerializationException(string.Format(CultureInfo.InvariantCulture, "Error converting value '{0}'", value));
+                throw new JsonException(string.Format(CultureInfo.InvariantCulture, "Error converting value '{0}'", objectType));
             }
         }
     }
